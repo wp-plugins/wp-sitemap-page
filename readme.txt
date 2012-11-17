@@ -1,18 +1,34 @@
 === WP Sitemap Page ===
 Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
-Tags: sitemap, generator, site map, html sitemap
+Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 
 
-This plugin allow you to list your pages and posts on a page using the shortcode [wp_sitemap_page].
+Add a sitemap on one any of your page using the simple shortcode [wp_sitemap_page]. Improve the SEO and navigation of your website.
+
 
 == Description ==
-An easy way to add a sitemap on one of your pages becomes reality thanks to this WordPress plugin. Just use the shortcode [wp_sitemap_page] on any of your pages. This will automatically generate a sitemap of all your pages and posts.
+An easy way to **add a sitemap** on one of your pages becomes reality thanks to this WordPress plugin. Just use the shortcode [wp_sitemap_page] on any of your pages. This will automatically generate a sitemap of all your pages and posts.
+
 Be carefull, this plugin do not generate an XML sitemap. It only allow you to list all your pages and posts on a single page. This is a sitemap for human not for search engines bots.
+
+= Why this plugin is useful? =
+Such a sitemap is useful for many reasons:
+
+*   **Easy navigation** for the users. They can find easily pages or previous posts
+*   **Improve the SEO** of a website
+
+= Current features =
+
+*   Display all pages, posts and categories
+*   Posts and categories displayed hierarchically
+*   Easy to use
+*   Has CSS class to customize it if you want
+*   Available in multi-languages
 
 Want a WordPress developper? Feel free to <a href="http://en.tonyarchambeau.com/contact.html">contact me</a>.
 
@@ -40,11 +56,14 @@ No. The generated sitemaps only included pages, categories and posts.
 
 
 == Changelog ==
+= 1.0.1 =
+Add french translation
+
 = 1.0 =
 Initial Release.
 
 
-== Upgrade Notice ==
+== Upgrade notice ==
 
 
 == How to uninstall WP Sitemap Page ==

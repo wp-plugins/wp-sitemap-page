@@ -1,14 +1,20 @@
 <?php
 /**
+
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
+Version: 1.0.1
 Author: Tony Archambeau
-Version: 1.0
 Author URI: http://tonyarchambeau.com/
+Text Domain: wp-sitemap-page
+Domain Path: /languages
 
 Copyright 2012 Tony Archambeau
 */
+
+
+load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 
 /**
@@ -17,17 +23,18 @@ Copyright 2012 Tony Archambeau
  * @param $atts
  * @param $content
  */
-function wsp_wp_sitemap_page_func( $atts, $content=null ) {
+function wsp_wp_sitemap_page_func( $atts, $content=null )
+{
 	$return = '';
 	
 	// List the pages
-	$return .= '<h2>'.__('Pages', 'wp_sitemap_page').'</h2>';
-	$return .= '<ul>';
+	$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>';
+	$return .= '<ul class="wsp-pages-list">';
 	$return .= wp_list_pages('title_li=&echo=0');
 	$return .= '</ul>';
 	
 	// List the posts by category
-	$return .= '<h2>'.__('Posts by categories', 'wp_sitemap_page').'</h2>';
+	$return .= '<h2 class="wsp-posts-list">'.__('Posts by categorie', 'wp_sitemap_page').'</h2>';
 	
 	// Get the categories
 	$cats = get_categories();
@@ -80,7 +87,7 @@ function wsp_displayPostByCat($cat_id)
 			$date_fragments = explode('-', substr_replace($the_post->post_date, '', 10));
 			$the_date = $date_fragments[2].'/'.$date_fragments[1].'/'.$date_fragments[0];
 			
-			$html .= "\t\t".'<li><a href="'.get_permalink($the_post->ID).'">'.$the_post->post_title.'</a> ('.$the_date.')</li>'."\n";
+			$html .= "\t\t".'<li class="wsp-post"><a href="'.get_permalink($the_post->ID).'">'.$the_post->post_title.'</a> ('.$the_date.')</li>'."\n";
 		}
 	}
 	
@@ -102,7 +109,7 @@ function wsp_htmlFromMultiArray($nav, $useUL = true)
 	}
 	
 	foreach($nav as $page) {
-		$html .= "\t".'<li><strong>'.__('Category', 'wp_sitemap_page').' : <a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a></strong>'."\n";
+		$html .= "\t".'<li><strong class="wsp-category-title">'.__('Category', 'wp_sitemap_page').' : <a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a></strong>'."\n";
 		
 		$post_by_cat = displayPostByCat($page->cat_ID);
 		
@@ -126,7 +133,6 @@ function wsp_htmlFromMultiArray($nav, $useUL = true)
 		if ($post_by_cat != '' || $category_recursive!= '') {
 			$html .= '</ul>';
 		}
-		
 		
 		$html .= '</li>'."\n";
 	}
