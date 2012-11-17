@@ -4,7 +4,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.0.1
+Version: 1.0.2
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -111,7 +111,7 @@ function wsp_htmlFromMultiArray($nav, $useUL = true)
 	foreach($nav as $page) {
 		$html .= "\t".'<li><strong class="wsp-category-title">'.__('Category', 'wp_sitemap_page').' : <a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a></strong>'."\n";
 		
-		$post_by_cat = displayPostByCat($page->cat_ID);
+		$post_by_cat = wsp_displayPostByCat($page->cat_ID);
 		
 		// List of posts for this category
 		$category_recursive = '';

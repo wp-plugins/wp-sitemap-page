@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 
 
@@ -56,6 +56,9 @@ No. The generated sitemaps only included pages, categories and posts.
 
 
 == Changelog ==
+= 1.0.2 =
+Fix a bug of a function that has been renamed.
+
 = 1.0.1 =
 Add french translation
 
