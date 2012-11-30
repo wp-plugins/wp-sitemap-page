@@ -34,7 +34,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 	$return .= '</ul>';
 	
 	// List the posts by category
-	$return .= '<h2 class="wsp-posts-list">'.__('Posts by categorie', 'wp_sitemap_page').'</h2>';
+	$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>';
 	
 	// Get the categories
 	$cats = get_categories();
@@ -109,7 +109,7 @@ function wsp_htmlFromMultiArray($nav, $useUL = true)
 	}
 	
 	foreach($nav as $page) {
-		$html .= "\t".'<li><strong class="wsp-category-title">'.__('Category', 'wp_sitemap_page').' : <a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a></strong>'."\n";
+		$html .= "\t".'<li><strong class="wsp-category-title">'.__('Category:', 'wp_sitemap_page').' <a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a></strong>'."\n";
 		
 		$post_by_cat = wsp_displayPostByCat($page->cat_ID);
 		
