@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.0.3
+Stable tag: 1.0.2
 License: GPLv2 or later
 
 
@@ -25,10 +25,12 @@ Such a sitemap is useful for many reasons:
 = Current features =
 
 *   Display all pages, posts and categories
-*   Posts and categories displayed hierarchically
+*   Display the Custom Post Type (such as : "event" custom post type, "book" custom post type ...)
 *   Easy to use
+*   Possibility to customize the way it will be displayed through the admin panel
+*   Posts and categories displayed hierarchically
 *   Has CSS class to customize it if you want
-*   Available in multi-languages
+*   Available in multi-languages (at least english and french). You can add your own translation if you want
 
 Want a WordPress developper? Feel free to <a href="http://en.tonyarchambeau.com/contact.html">contact me</a>.
 
@@ -48,7 +50,7 @@ No. The sitemap is dynamically generated without using any cache. Trying to gene
 No. The purpose of this plugin is to generate a sitemap on one of your pages. This is simply a list of all your pages and posts.
 
 = Does it work with Custom Post Type ? =
-No. The generated sitemaps only included pages, categories and posts.
+Yes. It works fine with the Custom Post Type since version 1.0.4
 
 
 == Screenshots ==
@@ -56,8 +58,14 @@ No. The generated sitemaps only included pages, categories and posts.
 
 
 == Changelog ==
+
+= 1.0.4 =
+* Fix some bug
+* Include the Custom Post Type on the sitemap
+* Possibility to customize the way the posts will be displayed
+
 = 1.0.3 =
-Fix a translation error with the default language (cf. English) for the word "category".
+Fix a translation error
 
 = 1.0.2 =
 Fix a bug of a function that has been renamed.
