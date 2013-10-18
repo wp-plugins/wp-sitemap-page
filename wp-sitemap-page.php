@@ -3,13 +3,13 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.0.4
+Version: 1.0.5
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
 Domain Path: /languages
 
-Copyright 2012 Tony Archambeau
+Copyright 2013 Tony Archambeau
 */
 
 
@@ -64,6 +64,7 @@ function wsp_install() {
 function wsp_uninstall() {
 	// Unregister an option
 	delete_option( 'wsp_posts_by_category' );
+	delete_option( 'wsp_exclude_pages' );
 	unregister_setting('wp-sitemap-page', 'wsp_posts_by_category');
 }
 
@@ -126,6 +127,7 @@ add_filter('plugin_row_meta', 'wsp_plugin_row_meta',10,2);
  */
 function wsp_save_settings() {
 	register_setting( 'wp-sitemap-page', 'wsp_posts_by_category' ); 
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_pages' ); 
 } 
 add_action( 'admin_init', 'wsp_save_settings' );
 
@@ -235,8 +237,21 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 	// init
 	$return = '';
 	
+	// Exclude some pages
+	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
+	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['title_li'] = '';
+	$args['echo']     = '0';
+	
+	// exclude some pages ?
+	if (!empty($wsp_exclude_pages)) {
+		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
 	// List the pages
-	$list_pages = wp_list_pages('title_li=&echo=0');
+	$list_pages = wp_list_pages($args);
 	if (!empty($list_pages)) {
 		$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>';
 		$return .= '<ul class="wsp-pages-list">';
@@ -247,7 +262,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 	// List the posts by category
 	$cats = get_categories();
 	if (!empty($cats)) {
-		$return .= '<h2 class="wsp-posts-list">'.__('Posts by categorie', 'wp_sitemap_page').'</h2>';
+		$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>';
 		
 		// Get the categories
 		$cats = wsp_generateMultiArray($cats);

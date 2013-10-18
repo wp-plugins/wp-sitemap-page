@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 1.0.2
+Tested up to: 3.6.1
+Stable tag: 1.0.5
 License: GPLv2 or later
 
 
@@ -58,6 +58,11 @@ Yes. It works fine with the Custom Post Type since version 1.0.4
 
 
 == Changelog ==
+
+= 1.0.5 =
+* Possibility to exclude some pages
+* Fix some translation bug
+* Add the Russian language, French (Belgium, Switzerland, Luxembourg, Canada)
 
 = 1.0.4 =
 * Fix some bug

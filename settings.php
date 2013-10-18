@@ -12,7 +12,7 @@
 						<h3><span><?php _e('Settings', 'wp_sitemap_page'); ?></span></h3>
 						<div class="inside">
 
-	<p><?php _e('Please choose how you want to display the posts on the sitemap.');?></p>
+	<p><?php _e('Please choose how you want to display the posts on the sitemap.', 'wp_sitemap_page');?></p>
 	<ul>
 		<li><?php echo sprintf( __('%1$s: title of the post.', 'wp_sitemap_page'), '<strong>{title}</strong>' );?></li>
 		<li><?php echo sprintf( __('%1$s: URL of the post.', 'wp_sitemap_page'), '<strong>{permalink}</strong>' );?></li>
@@ -33,7 +33,7 @@
 			<tr valign="top">
 				<th scope="row">
 					<label for="wsp_posts_by_category">
-					<?php _e('How to display the posts');?>
+					<?php _e('How to display the posts', 'wp_sitemap_page');?>
 					</label>
 				</th>
 				<td>
@@ -58,6 +58,23 @@
 						?></textarea>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row">
+					<label for="wsp_exclude_pages">
+					<?php _e('Exclude pages', 'wp_sitemap_page'); ?>
+					</label>
+				</th>
+				<td>
+					<?php
+					// Exclude some pages
+					$wsp_exclude_pages = get_option('wsp_exclude_pages');
+					?>
+					<input type="text" class="large-text code" 
+						name="wsp_exclude_pages" id="wsp_exclude_pages" 
+						value="<?php echo $wsp_exclude_pages; ?>" />
+					<p class="description"><?php _e('Just add the IDs, separated by a comma, of the pages you want to exclude.', 'wp_sitemap_page'); ?></p>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 		<?php
@@ -76,9 +93,18 @@
 					<div class="postbox">
 					<h3><span><?php _e('About', 'wp_sitemap_page'); ?></span></h3>
 					<div style="padding:0 5px;">
+						<?php
+						$fr_lang = array('fr_FR', 'fr_BE', 'fr_CH', 'fr_LU', 'fr_CA');
+						$is_fr = (in_array(WPLANG, $fr_lang) ? true : false);
+						// Get the URL author depending on the language
+						$url_author = ( $is_fr===true ? 'http://tonyarchambeau.com/' : 'http://en.tonyarchambeau.com/' );
+						?>
 						<p><?php _e('To display the sitemap, just use [wp_sitemap_page] on any page or post.', 'wp_sitemap_page'); ?></p>
-						<p><?php _e('Plugin developed by <a href="http://en.tonyarchambeau.com/">Tony Archambeau</a>.', 'wp_sitemap_page'); ?></p>
-						<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FQKK22PPR3EJE&lc=GB&item_name=WP%20Sitemap%20Page&item_number=wp%2dsitemap%2dpage&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted"><?php _e('Donate', 'wp_sitemap_page'); ?></a>
+						<p><?php printf(__('Plugin developed by <a href="%1$s">Tony Archambeau</a>.', 'wp_sitemap_page'), $url_author); ?></p>
+						<?php
+						$url_paypal = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FQKK22PPR3EJE&lc=GB&item_name=WP%20Sitemap%20Page&item_number=wp%2dsitemap%2dpage&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted';
+						?>
+						<p><a href="<?php echo $url_paypal; ?>"><?php _e('Donate', 'wp_sitemap_page'); ?></a></p>
 					</div>
 					</div><!-- .postbox -->
 				</div><!-- .meta-box-sortables -->
