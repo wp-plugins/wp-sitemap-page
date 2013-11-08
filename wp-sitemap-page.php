@@ -269,6 +269,39 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 		$return .= wsp_htmlFromMultiArray($cats);
 	}
 	
+	// Get the CPT (Custom Post Type)
+	$args = array(
+		'public'   => true,
+		'_builtin' => false
+	);
+	$post_types = get_post_types( $args, 'names' ); 
+	
+	// list all the CPT
+	foreach ( $post_types as $post_type ) {
+		// extract CPT object
+		$cpt = get_post_type_object( $post_type );
+		
+		// define the way the pages should be displayed
+		$args = array();
+		$args['title_li']  = '';
+		$args['echo']      = '0';
+		$args['post_type'] = $post_type;
+		
+		// exclude some pages ?
+		if (!empty($wsp_exclude_pages)) {
+			$args['exclude'] = $wsp_exclude_pages;
+		}
+		
+		// List the pages
+		$list_pages = wp_list_pages($args);
+		
+		// Return the data
+		$return .= '<h2 class="wsp-'.$post_type.'s-list">'. $cpt->label.'</h2>';
+		$return .= '<ul class="wsp-'.$post_type.'s-list">';
+		$return .= $list_pages;
+		$return .= '</ul>';
+	}
+	
 	return $return;
 }
 add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );

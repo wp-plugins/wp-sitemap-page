@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 
 
@@ -30,9 +30,9 @@ Such a sitemap is useful for many reasons:
 *   Possibility to customize the way it will be displayed through the admin panel
 *   Posts and categories displayed hierarchically
 *   Has CSS class to customize it if you want
-*   Available in multi-languages (at least english and french). You can add your own translation if you want
+*   Available in multi-languages (cf. English, French, Russian and Dutch). You can add your own translation if you want
 
-Want a WordPress developper? Feel free to <a href="http://en.tonyarchambeau.com/contact.html">contact me</a>.
+Want a WordPress developper? Want to add a translation? Feel free to <a href="http://en.tonyarchambeau.com/contact.html">contact me</a>.
 
 
 == Installation ==
@@ -58,6 +58,10 @@ Yes. It works fine with the Custom Post Type since version 1.0.4
 
 
 == Changelog ==
+
+= 1.0.6 =
+* Add and update some translation (Russian and Dutch)
+* Add the Custom Post Type on the sitemap. There was an error in the 1.0.4 version
 
 = 1.0.5 =
 * Possibility to exclude some pages

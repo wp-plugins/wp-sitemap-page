@@ -100,11 +100,20 @@
 						$url_author = ( $is_fr===true ? 'http://tonyarchambeau.com/' : 'http://en.tonyarchambeau.com/' );
 						?>
 						<p><?php _e('To display the sitemap, just use [wp_sitemap_page] on any page or post.', 'wp_sitemap_page'); ?></p>
+						<hr />
 						<p><?php printf(__('Plugin developed by <a href="%1$s">Tony Archambeau</a>.', 'wp_sitemap_page'), $url_author); ?></p>
 						<?php
 						$url_paypal = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FQKK22PPR3EJE&lc=GB&item_name=WP%20Sitemap%20Page&item_number=wp%2dsitemap%2dpage&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted';
 						?>
 						<p><a href="<?php echo $url_paypal; ?>"><?php _e('Donate', 'wp_sitemap_page'); ?></a></p>
+						<?php
+						// Display the author for Russian audience
+						if (WPLANG == 'ru_RU') {
+							?>
+							<p><?php printf(__('Translated in Russian by <a href="%1$s">skesov.ru</a>.', 'wp_sitemap_page'), 'http://skesov.ru/'); ?></p>
+							<?php
+						}
+						?>
 					</div>
 					</div><!-- .postbox -->
 				</div><!-- .meta-box-sortables -->

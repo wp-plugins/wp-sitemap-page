@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp_sitemap_page\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-08 17:17+0100\n"
-"PO-Revision-Date: 2013-11-08 17:17+0100\n"
+"POT-Creation-Date: 2013-11-08 17:07+0100\n"
+"PO-Revision-Date: 2013-11-08 17:07+0100\n"
 "Last-Translator: Tony <archambeautony@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -20,61 +20,63 @@ msgstr ""
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:82
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:83
 msgid "WP Sitemap Page"
-msgstr ""
+msgstr "WP Sitemap Page"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:12
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:116
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:15
 msgid "Please choose how you want to display the posts on the sitemap."
 msgstr ""
+"Пожалуйста, выберите как отображать записи в карте сайта. Используйте "
+"следующие значения."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:17
 #, php-format
 msgid "%1$s: title of the post."
-msgstr ""
+msgstr "%1$s : Название поста."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:18
 #, php-format
 msgid "%1$s: URL of the post."
-msgstr ""
+msgstr "%1$s : URL-адрес поста."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:19
 #, php-format
 msgid "%1$s: The year of the post, four digits, for example 2004."
-msgstr ""
+msgstr "%1$s : Год написания статьи, четыре цифры, например 2013."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:20
 #, php-format
 msgid "%1$s: Month of the year, for example 05."
-msgstr ""
+msgstr "%1$s : Месяц, например 05."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:21
 #, php-format
 msgid "%1$s: Day of the month, for example 28."
-msgstr ""
+msgstr "%1$s : День, например 28."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:22
 #, php-format
 msgid "%1$s: Hour of the day, for example 15."
-msgstr ""
+msgstr "%1$s : Час, например 15."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:23
 #, php-format
 msgid "%1$s: Minute of the hour, for example 43."
-msgstr ""
+msgstr "%1$s : Минута, например 43."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:24
 #, php-format
 msgid "%1$s: Second of the minute, for example 33."
-msgstr ""
+msgstr "%1$s : Секунда, например 33."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:25
 #, php-format
 msgid "%1$s: The unique ID # of the post, for example 423."
-msgstr ""
+msgstr "%1$s : Уникальный ID # записи, например 423."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:26
 #, php-format
@@ -82,27 +84,33 @@ msgid ""
 "%1$s: Category name. Nested sub-categories appear as nested directories in "
 "the URI."
 msgstr ""
+"%1$s : Название раздела. Вложенные подразделы сайта отображаются как "
+"вложенные каталоги в URI."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:36
 msgid "How to display the posts"
-msgstr ""
+msgstr "Как отображать записи"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:64
 msgid "Exclude pages"
-msgstr ""
+msgstr "Исключенные страницы"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:75
 msgid ""
 "Just add the IDs, separated by a comma, of the pages you want to exclude."
 msgstr ""
+"Просто добавьте ID страниц или записей (через запятую), которые вы хотите "
+"исключить из карты сайта."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:94
 msgid "About"
-msgstr ""
+msgstr "О плагине"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:102
 msgid "To display the sitemap, just use [wp_sitemap_page] on any page or post."
 msgstr ""
+"Для отображения карты сайта вставьте [wp_sitemap_page] в любую страницу или "
+"запись."
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/settings.php:104
 #, php-format
@@ -121,17 +129,17 @@ msgstr ""
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:256
 msgid "Pages"
-msgstr ""
+msgstr "Страницы"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:265
 msgid "Posts by category"
-msgstr ""
+msgstr "Статьи по разделам"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:356
 #, php-format
 msgid "Category: %1$s"
-msgstr ""
+msgstr "Раздел: %1$s"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_5_next/wp-sitemap-page.php:416
 msgid "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"
-msgstr ""
+msgstr "<a href=\"{permalink}\">{title}</a>"
