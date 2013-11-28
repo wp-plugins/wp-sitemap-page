@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.0.6
+Version: 1.0.7
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -79,12 +79,14 @@ function wsp_uninstall() {
  * Add menu on the Back-Office for the plugin
  */
 function wsp_add_options_page() {
-	$page_title = __('WP Sitemap Page', 'wp_sitemap_page');
-	$menu_title = __('WP Sitemap Page', 'wp_sitemap_page');
-	$capability = 'administrator';
-	$menu_slug = 'wp_sitemap_page';
-	$function = 'wsp_settings_page'; // function that contain the page
-	add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function );
+  if (function_exists('add_options_page')) {
+    $page_title = __('WP Sitemap Page', 'wp_sitemap_page');
+    $menu_title = __('WP Sitemap Page', 'wp_sitemap_page');
+    $capability = 'administrator';
+    $menu_slug = 'wp_sitemap_page';
+    $function = 'wsp_settings_page'; // function that contain the page
+    add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function );
+  }
 }
 add_action('admin_menu', 'wsp_add_options_page');
 
@@ -283,8 +285,6 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 		
 		// define the way the pages should be displayed
 		$args = array();
-		$args['title_li']  = '';
-		$args['echo']      = '0';
 		$args['post_type'] = $post_type;
 		
 		// exclude some pages ?
@@ -293,13 +293,25 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 		}
 		
 		// List the pages
-		$list_pages = wp_list_pages($args);
+		$list_pages = '';
 		
-		// Return the data
-		$return .= '<h2 class="wsp-'.$post_type.'s-list">'. $cpt->label.'</h2>';
-		$return .= '<ul class="wsp-'.$post_type.'s-list">';
-		$return .= $list_pages;
-		$return .= '</ul>';
+		// Query to get the current custom post type
+		$posts_cpt = get_posts( $args );
+		
+		// List all the results
+		if( $posts_cpt ) {
+			foreach( $posts_cpt as $post_cpt ) {
+				$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>';
+			}
+		}
+		
+		// Return the data (if it exists)
+		if (!empty($list_pages)) {
+			$return .= '<h2 class="wsp-'.$post_type.'s-list">' . $cpt->label . '</h2>';
+			$return .= '<ul class="wsp-'.$post_type.'s-list">';
+			$return .= $list_pages;
+			$return .= '</ul>';
+		}
 	}
 	
 	return $return;
