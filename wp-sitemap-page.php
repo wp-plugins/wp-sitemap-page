@@ -286,6 +286,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 		// define the way the pages should be displayed
 		$args = array();
 		$args['post_type'] = $post_type;
+		$args['posts_per_page'] = 999999;
 		
 		// exclude some pages ?
 		if (!empty($wsp_exclude_pages)) {
