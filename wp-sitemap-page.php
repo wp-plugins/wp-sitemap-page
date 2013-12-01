@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.0.7
+Version: 1.0.8
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -25,6 +25,9 @@ if ( !defined('WSP_USER_NAME') )       define('WSP_USER_NAME', basename(dirname(
 if ( !defined('WSP_USER_PLUGIN_DIR') ) define('WSP_USER_PLUGIN_DIR', WP_PLUGIN_DIR .'/'. WSP_USER_NAME );
 if ( !defined('WSP_USER_PLUGIN_URL') ) define('WSP_USER_PLUGIN_URL', WP_PLUGIN_URL .'/'. WSP_USER_NAME );
 
+if ( !defined('WSP_USER_PLUGIN_URL') ) define('WSP_VERSION', '1.0.8');
+if ( !defined('WSP_DONATE_LINK') )     define('WSP_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=FQKK22PPR3EJE&amp;lc=GB&amp;item_name=WP%20Sitemap%20Page&amp;item_number=wp%2dsitemap%2dpage&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
+
 
 
 /***************************************************************
@@ -43,7 +46,7 @@ if (function_exists('register_uninstall_hook')) {
 /**
  * Hooks for uninstall
  */
-if( function_exists('register_activation_hook')){
+if ( function_exists('register_activation_hook')) {
 	register_activation_hook(__FILE__, 'wsp_install');
 }
 
@@ -79,14 +82,14 @@ function wsp_uninstall() {
  * Add menu on the Back-Office for the plugin
  */
 function wsp_add_options_page() {
-  if (function_exists('add_options_page')) {
-    $page_title = __('WP Sitemap Page', 'wp_sitemap_page');
-    $menu_title = __('WP Sitemap Page', 'wp_sitemap_page');
-    $capability = 'administrator';
-    $menu_slug = 'wp_sitemap_page';
-    $function = 'wsp_settings_page'; // function that contain the page
-    add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function );
-  }
+	if (function_exists('add_options_page')) {
+		$page_title = __('WP Sitemap Page', 'wp_sitemap_page');
+		$menu_title = __('WP Sitemap Page', 'wp_sitemap_page');
+		$capability = 'administrator';
+		$menu_slug = 'wp_sitemap_page';
+		$function = 'wsp_settings_page'; // function that contain the page
+		add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function );
+	}
 }
 add_action('admin_menu', 'wsp_add_options_page');
 
@@ -97,12 +100,12 @@ add_action('admin_menu', 'wsp_add_options_page');
  * @return boolean
  */
 function wsp_settings_page() {
-  $path = trailingslashit(dirname(__FILE__));
-  
-  if (!file_exists( $path . 'settings.php')) {
-    return false;
-  }
-  require_once($path . 'settings.php');
+	$path = trailingslashit(dirname(__FILE__));
+	
+	if (!file_exists( $path . 'settings.php')) {
+		return false;
+	}
+	require_once($path . 'settings.php');
 }
 
 
@@ -113,12 +116,12 @@ function wsp_settings_page() {
  * @param str $file
  */
 function wsp_plugin_row_meta($links, $file) {
-  if ($file == plugin_basename(__FILE__)) {
-    $settings_page = 'wp_sitemap_page';
-    $links[] = '<a href="options-general.php?page=' . $settings_page .'">' . __('Settings','wp_sitemap_page') . '</a>';
-    $links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FQKK22PPR3EJE&lc=GB&item_name=WP%20Sitemap%20Page&item_number=wp%2dsitemap%2dpage&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">'.__('Donate', 'wp_sitemap_page').'</a>';
-  }
-  return $links;
+	if ($file == plugin_basename(__FILE__)) {
+		$settings_page = 'wp_sitemap_page';
+		$links[] = '<a href="options-general.php?page=' . $settings_page .'">' . __('Settings','wp_sitemap_page') . '</a>';
+		$links[] = '<a href="'.WSP_DONATE_LINK.'">'.__('Donate', 'wp_sitemap_page').'</a>';
+	}
+	return $links;
 }
 add_filter('plugin_row_meta', 'wsp_plugin_row_meta',10,2);
 
@@ -128,8 +131,29 @@ add_filter('plugin_row_meta', 'wsp_plugin_row_meta',10,2);
  * Manage the option when we submit the form
  */
 function wsp_save_settings() {
-	register_setting( 'wp-sitemap-page', 'wsp_posts_by_category' ); 
-	register_setting( 'wp-sitemap-page', 'wsp_exclude_pages' ); 
+	
+	// Register the settings
+	register_setting( 'wp-sitemap-page', 'wsp_posts_by_category' );
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_pages' );
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_page' );
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_post' );
+	
+	// Get the CPT (Custom Post Type)
+	$args = array(
+		'public'   => true,
+		'_builtin' => false
+	);
+	$post_types = get_post_types( $args, 'names' ); 
+	
+	// list all the CPT
+	foreach ( $post_types as $post_type ) {
+		
+		// extract CPT object
+		$cpt = get_post_type_object( $post_type );
+		
+		// register settings
+		register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_'.$cpt->name );
+	}
 } 
 add_action( 'admin_init', 'wsp_save_settings' );
 
@@ -144,8 +168,8 @@ add_action( 'admin_init', 'wsp_save_settings' );
  * 
  * @param $matches
  */
-function wsp_manage_option( array $matches = array() )
-{
+function wsp_manage_option( array $matches = array() ) {
+	
 	global $the_post_id;
 	
 	if (isset($matches[1])) {
@@ -229,47 +253,69 @@ function wsp_manage_option( array $matches = array() )
 
 
 /**
- * Shortcode function that generate the shortcode
+ * Shortcode function that generate the sitemap
+ * Use like this : [wp_sitemap_page]
  * 
  * @param $atts
  * @param $content
  */
-function wsp_wp_sitemap_page_func( $atts, $content=null ) 
-{
+function wsp_wp_sitemap_page_func( $atts, $content=null ) {
+	
 	// init
 	$return = '';
 	
 	// Exclude some pages
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
+	$wsp_exclude_cpt_page = get_option('wsp_exclude_cpt_page');
+	$wsp_exclude_cpt_post = get_option('wsp_exclude_cpt_post');
 	
-	// define the way the pages should be displayed
-	$args = array();
-	$args['title_li'] = '';
-	$args['echo']     = '0';
 	
-	// exclude some pages ?
-	if (!empty($wsp_exclude_pages)) {
-		$args['exclude'] = $wsp_exclude_pages;
-	}
-	
+	//===============================================
 	// List the pages
-	$list_pages = wp_list_pages($args);
-	if (!empty($list_pages)) {
-		$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>';
-		$return .= '<ul class="wsp-pages-list">';
-		$return .= $list_pages;
-		$return .= '</ul>';
+	//===============================================
+	if ( empty($wsp_exclude_cpt_page) ) {
+		
+		// define the way the pages should be displayed
+		$args = array();
+		$args['title_li'] = '';
+		$args['echo']     = '0';
+		
+		// exclude some pages ?
+		if (!empty($wsp_exclude_pages)) {
+			$args['exclude'] = $wsp_exclude_pages;
+		}
+		
+		$list_pages = wp_list_pages($args);
+		if (!empty($list_pages)) {
+			$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>';
+			$return .= '<ul class="wsp-pages-list">';
+			$return .= $list_pages;
+			$return .= '</ul>';
+		}
 	}
 	
+	
+	//===============================================
 	// List the posts by category
-	$cats = get_categories();
-	if (!empty($cats)) {
-		$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>';
+	//===============================================
+	if ( empty($wsp_exclude_cpt_post) ) {
 		
 		// Get the categories
-		$cats = wsp_generateMultiArray($cats);
-		$return .= wsp_htmlFromMultiArray($cats);
+		$cats = get_categories();
+		
+		if (!empty($cats)) {
+			$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>';
+			
+			// Get the categories
+			$cats = wsp_generateMultiArray($cats);
+			$return .= wsp_htmlFromMultiArray($cats);
+		}
 	}
+	
+	
+	//===============================================
+	// List the CPT
+	//===============================================
 	
 	// Get the CPT (Custom Post Type)
 	$args = array(
@@ -280,38 +326,45 @@ function wsp_wp_sitemap_page_func( $atts, $content=null )
 	
 	// list all the CPT
 	foreach ( $post_types as $post_type ) {
+		
 		// extract CPT object
 		$cpt = get_post_type_object( $post_type );
 		
-		// define the way the pages should be displayed
-		$args = array();
-		$args['post_type'] = $post_type;
-		$args['posts_per_page'] = 999999;
+		// Is this CPT already excluded ?
+		$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
 		
-		// exclude some pages ?
-		if (!empty($wsp_exclude_pages)) {
-			$args['exclude'] = $wsp_exclude_pages;
-		}
-		
-		// List the pages
-		$list_pages = '';
-		
-		// Query to get the current custom post type
-		$posts_cpt = get_posts( $args );
-		
-		// List all the results
-		if( $posts_cpt ) {
-			foreach( $posts_cpt as $post_cpt ) {
-				$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>';
+		if ( empty($wsp_exclude_cpt) ) {
+			
+			// List the pages
+			$list_pages = '';
+			
+			// define the way the pages should be displayed
+			$args = array();
+			$args['post_type'] = $post_type;
+			$args['posts_per_page'] = 999999;
+			
+			// exclude some pages ?
+			if (!empty($wsp_exclude_pages)) {
+				$args['exclude'] = $wsp_exclude_pages;
 			}
-		}
-		
-		// Return the data (if it exists)
-		if (!empty($list_pages)) {
-			$return .= '<h2 class="wsp-'.$post_type.'s-list">' . $cpt->label . '</h2>';
-			$return .= '<ul class="wsp-'.$post_type.'s-list">';
-			$return .= $list_pages;
-			$return .= '</ul>';
+			
+			// Query to get the current custom post type
+			$posts_cpt = get_posts( $args );
+			
+			// List all the results
+			if( $posts_cpt ) {
+				foreach( $posts_cpt as $post_cpt ) {
+					$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>';
+				}
+			}
+			
+			// Return the data (if it exists)
+			if (!empty($list_pages)) {
+				$return .= '<h2 class="wsp-'.$post_type.'s-list">' . $cpt->label . '</h2>';
+				$return .= '<ul class="wsp-'.$post_type.'s-list">';
+				$return .= $list_pages;
+				$return .= '</ul>';
+			}
 		}
 	}
 	
@@ -326,8 +379,8 @@ add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
  * @param array $arr
  * @param int $parent
  */
-function wsp_generateMultiArray( array $arr = array() , $parent = 0 )
-{
+function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
+	
 	// check if not empty
 	if (empty($arr)) {
 		return array();
@@ -352,8 +405,8 @@ function wsp_generateMultiArray( array $arr = array() , $parent = 0 )
  * @param array $nav
  * @param bool $useUL
  */
-function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true )
-{
+function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true ) {
+	
 	// check if not empty
 	if (empty($nav)) {
 		return '';
@@ -364,7 +417,8 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true )
 		$html .= '<ul class="wsp-posts-list">'."\n";
 	}
 	
-	foreach($nav as $page) {
+	// List all the categories
+	foreach ($nav as $page) {
 		$html .= "\t".'<li><strong class="wsp-category-title">'
 			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a>' )
 			.'</strong>'."\n";
@@ -407,8 +461,8 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true )
  * 
  * @param int $cat_id
  */
-function wsp_displayPostByCat($cat_id)
-{
+function wsp_displayPostByCat( $cat_id ) {
+	
 	global $the_post_id;
 	
 	// init
@@ -432,7 +486,7 @@ function wsp_displayPostByCat($cat_id)
 		add_option( 'wsp_posts_by_category', $wsp_posts_by_category );
 	}
 	
-	foreach ($the_posts as $the_post) {
+	foreach ( $the_posts as $the_post ) {
 		// Display the line of a post
 		$get_category = get_the_category($the_post->ID);
 		

@@ -75,6 +75,62 @@
 					<p class="description"><?php _e('Just add the IDs, separated by a comma, of the pages you want to exclude.', 'wp_sitemap_page'); ?></p>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row">
+					<?php _e('Exclude Custom Post Type', 'wp_sitemap_page'); ?>
+				</th>
+				<td>
+					<?php
+					// Is this CPT already excluded ?
+					$wsp_exclude_cpt_page = get_option('wsp_exclude_cpt_page');
+					$wsp_exclude_cpt_post = get_option('wsp_exclude_cpt_post');
+					?>
+					<div>
+						<label for="wsp_exclude_cpt_page">
+							<input type="checkbox" 
+								name="wsp_exclude_cpt_page" id="wsp_exclude_cpt_page" 
+								value="1" <?php echo ($wsp_exclude_cpt_page==1 ? ' checked="checked"' : ''); ?> />
+								<?php _e('Page', 'wp_sitemap_page'); ?>
+						</label>
+					</div>
+					<div>
+						<label for="wsp_exclude_cpt_post">
+							<input type="checkbox" 
+								name="wsp_exclude_cpt_post" id="wsp_exclude_cpt_post" 
+								value="1" <?php echo ($wsp_exclude_cpt_post==1 ? ' checked="checked"' : ''); ?> />
+								<?php _e('Post', 'wp_sitemap_page'); ?>
+						</label>
+					</div>
+					<?php
+					// Get the CPT (Custom Post Type)
+					$args = array(
+						'public'   => true,
+						'_builtin' => false
+					);
+					$post_types = get_post_types( $args, 'names' ); 
+					
+					// list all the CPT
+					foreach ( $post_types as $post_type ) {
+						
+						// extract CPT object
+						$cpt = get_post_type_object( $post_type );
+						
+						// Is this CPT already excluded ?
+						$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
+						?>
+						<div>
+							<label for="wsp_exclude_cpt_<?php echo $cpt->name; ?>">
+								<input type="checkbox" 
+									name="wsp_exclude_cpt_<?php echo $cpt->name; ?>" id="wsp_exclude_cpt_<?php echo $cpt->name; ?>" 
+									value="1" <?php echo ($wsp_exclude_cpt=='1' ? ' checked="checked"' : ''); ?> />
+									<?php echo $cpt->name; ?>
+							</label>
+						</div>
+						<?php
+					}
+					?>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 		<?php
@@ -102,10 +158,7 @@
 						<p><?php _e('To display the sitemap, just use [wp_sitemap_page] on any page or post.', 'wp_sitemap_page'); ?></p>
 						<hr />
 						<p><?php printf(__('Plugin developed by <a href="%1$s">Tony Archambeau</a>.', 'wp_sitemap_page'), $url_author); ?></p>
-						<?php
-						$url_paypal = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FQKK22PPR3EJE&lc=GB&item_name=WP%20Sitemap%20Page&item_number=wp%2dsitemap%2dpage&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted';
-						?>
-						<p><a href="<?php echo $url_paypal; ?>"><?php _e('Donate', 'wp_sitemap_page'); ?></a></p>
+						<p><a href="<?php echo WSP_DONATE_LINK; ?>"><?php _e('Donate', 'wp_sitemap_page'); ?></a></p>
 						<?php
 						// Display the author for Russian audience
 						if (WPLANG == 'ru_RU') {
