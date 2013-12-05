@@ -123,7 +123,7 @@
 								<input type="checkbox" 
 									name="wsp_exclude_cpt_<?php echo $cpt->name; ?>" id="wsp_exclude_cpt_<?php echo $cpt->name; ?>" 
 									value="1" <?php echo ($wsp_exclude_cpt=='1' ? ' checked="checked"' : ''); ?> />
-									<?php echo $cpt->name; ?>
+									<?php echo $cpt->label; ?>
 							</label>
 						</div>
 						<?php

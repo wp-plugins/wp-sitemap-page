@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.6.1
-Stable tag: 1.0.8
+Tested up to: 3.7.1
+Stable tag: 1.0.9
 License: GPLv2 or later
 
 
@@ -30,7 +30,7 @@ Such a sitemap is useful for many reasons:
 *   Possibility to exclude some pages or some Custom Post Type (CPT)
 *   Posts and categories displayed hierarchically
 *   Has CSS class to customize it if you want
-*   Available in multi-languages (cf. English, French, Russian and Dutch). You can add your own translation if you want
+*   Available in multi-languages (cf. English, French, Russian, Italian, Dutch and Persian). You can add your own translation if you want
 
 Want a WordPress developper? Want to add a translation? Feel free to [contact me](http://en.tonyarchambeau.com/contact.html).
 
@@ -60,6 +60,7 @@ This plugin is available through the following languages :
 *   Russian (`ru_RU`) by [skesov.ru](http://skesov.ru/)
 *   Dutch (`nl_NL`) by EvertRuisch
 *   Farsi/Persian (`fa_IR`) by Seyyed Mostafa Ahadzadeh
+*   Italian (`it_IT`) by Nima
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -70,6 +71,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.0.9 =
+* Add italian language
 = 1.0.8 =
 * Possibility to exclude all the posts, all the pages or any Custom Post Type
 * Add persian language
