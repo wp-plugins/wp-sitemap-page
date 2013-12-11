@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.7.1
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: GPLv2 or later
 
 
@@ -61,6 +61,7 @@ This plugin is available through the following languages :
 *   Dutch (`nl_NL`) by EvertRuisch
 *   Farsi/Persian (`fa_IR`) by Seyyed Mostafa Ahadzadeh
 *   Italian (`it_IT`) by Nima
+*   Spanish (`es_ES`) by Raul
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -71,6 +72,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.0.10 =
+* Add spanish language
 = 1.0.9 =
 * Add italian language
 = 1.0.8 =
