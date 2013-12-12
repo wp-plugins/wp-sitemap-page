@@ -3,7 +3,7 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.7.1
+Tested up to: 3.8.0
 Stable tag: 1.0.11
 License: GPLv2 or later
 
@@ -30,7 +30,7 @@ Such a sitemap is useful for many reasons:
 *   Possibility to exclude some pages or some Custom Post Type (CPT)
 *   Posts and categories displayed hierarchically
 *   Has CSS class to customize it if you want
-*   Available in multi-languages (cf. English, French, Russian, Italian, Dutch and Persian). You can add your own translation if you want
+*   Available in multi-languages (cf. English, French, Russian, Italian, Spanish, Dutch and Persian). You can add your own translation if you want
 
 Want a WordPress developper? Want to add a translation? Feel free to [contact me](http://en.tonyarchambeau.com/contact.html).
 
