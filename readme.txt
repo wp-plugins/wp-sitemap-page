@@ -62,7 +62,7 @@ This plugin is available through the following languages :
 *   Farsi/Persian (`fa_IR`) by Seyyed Mostafa Ahadzadeh
 *   Italian (`it_IT`) by Nima
 *   Spanish (`es_ES`) by Raul
-*   Czech (`cs_CZ`) by Roman
+*   Czech (`cs_CZ`) by [Roman Opet](https://www.high-definition.cz/)
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
