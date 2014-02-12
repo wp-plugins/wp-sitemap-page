@@ -1,3 +1,11 @@
+<?php
+
+// SECURITY : Exit if accessed directly
+if ( !defined('ABSPATH') ) {
+	exit;
+}
+
+?>
 <div class="wrap">
 	
 	<div id="icon-options-general" class="icon32"></div>
@@ -84,6 +92,8 @@
 					// Is this CPT already excluded ?
 					$wsp_exclude_cpt_page = get_option('wsp_exclude_cpt_page');
 					$wsp_exclude_cpt_post = get_option('wsp_exclude_cpt_post');
+					$wsp_exclude_cpt_archive = get_option('wsp_exclude_cpt_archive');
+					$wsp_exclude_cpt_author = get_option('wsp_exclude_cpt_author');
 					?>
 					<div>
 						<label for="wsp_exclude_cpt_page">
@@ -99,6 +109,22 @@
 								name="wsp_exclude_cpt_post" id="wsp_exclude_cpt_post" 
 								value="1" <?php echo ($wsp_exclude_cpt_post==1 ? ' checked="checked"' : ''); ?> />
 								<?php _e('Post', 'wp_sitemap_page'); ?>
+						</label>
+					</div>
+					<div>
+						<label for="wsp_exclude_cpt_archive">
+							<input type="checkbox" 
+								name="wsp_exclude_cpt_archive" id="wsp_exclude_cpt_archive" 
+								value="1" <?php echo ($wsp_exclude_cpt_archive==1 ? ' checked="checked"' : ''); ?> />
+								<?php _e('Archive', 'wp_sitemap_page'); ?>
+						</label>
+					</div>
+					<div>
+						<label for="wsp_exclude_cpt_author">
+							<input type="checkbox" 
+								name="wsp_exclude_cpt_author" id="wsp_exclude_cpt_author" 
+								value="1" <?php echo ($wsp_exclude_cpt_author==1 ? ' checked="checked"' : ''); ?> />
+								<?php _e('Author', 'wp_sitemap_page'); ?>
 						</label>
 					</div>
 					<?php

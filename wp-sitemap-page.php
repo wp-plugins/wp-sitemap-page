@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.0.12
+Version: 1.1.0
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -13,6 +13,13 @@ Copyright 2013 Tony Archambeau
 */
 
 
+// SECURITY : Exit if accessed directly
+if ( !defined('ABSPATH') ) {
+	exit;
+}
+
+
+// i18n
 load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 
@@ -21,13 +28,25 @@ load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FI
  * Define
  ***************************************************************/
 
-if ( !defined('WSP_USER_NAME') )       define('WSP_USER_NAME', basename(dirname(__FILE__)) );
-if ( !defined('WSP_USER_PLUGIN_DIR') ) define('WSP_USER_PLUGIN_DIR', WP_PLUGIN_DIR .'/'. WSP_USER_NAME );
-if ( !defined('WSP_USER_PLUGIN_URL') ) define('WSP_USER_PLUGIN_URL', WP_PLUGIN_URL .'/'. WSP_USER_NAME );
+if ( !defined('WSP_USER_NAME') ) {
+	define('WSP_USER_NAME', basename(dirname(__FILE__)) );
+}
+if ( !defined('WSP_USER_PLUGIN_DIR') ) {
+	define('WSP_USER_PLUGIN_DIR', WP_PLUGIN_DIR .'/'. WSP_USER_NAME );
+}
+if ( !defined('WSP_USER_PLUGIN_URL') ) {
+	define('WSP_USER_PLUGIN_URL', WP_PLUGIN_URL .'/'. WSP_USER_NAME );
+}
 
-if ( !defined('WSP_USER_PLUGIN_URL') ) define('WSP_VERSION', '1.0.8');
-if ( !defined('WSP_DONATE_LINK') )     define('WSP_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=FQKK22PPR3EJE&amp;lc=GB&amp;item_name=WP%20Sitemap%20Page&amp;item_number=wp%2dsitemap%2dpage&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
-
+if ( !defined('WSP_USER_PLUGIN_URL') ) {
+	define('WSP_VERSION', '1.0.8');
+}
+if ( !defined('WSP_DONATE_LINK') ) {
+	define('WSP_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=FQKK22PPR3EJE&amp;lc=GB&amp;item_name=WP%20Sitemap%20Page&amp;item_number=wp%2dsitemap%2dpage&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
+}
+if (!defined('WSP_VERSION_NUM')) {
+	define('WSP_VERSION_NUM', '1.1.0');
+}
 
 
 /***************************************************************
@@ -58,6 +77,10 @@ function wsp_install() {
 	// Initialise the RSS footer and save it
 	$wsp_posts_by_category = '<a href="{permalink}">{title}</a>';
 	add_option( 'wsp_posts_by_category', $wsp_posts_by_category );
+	
+	// by default deactivate the ARCHIVE and AUTHOR
+	add_option( 'wsp_exclude_cpt_archive', '1' );
+	add_option( 'wsp_exclude_cpt_author', '1' );
 }
 
 
@@ -68,9 +91,29 @@ function wsp_uninstall() {
 	// Unregister an option
 	delete_option( 'wsp_posts_by_category' );
 	delete_option( 'wsp_exclude_pages' );
+	delete_option( 'wsp_exclude_cpt_page' );
+	delete_option( 'wsp_exclude_cpt_post' );
+	delete_option( 'wsp_exclude_cpt_archive' );
+	delete_option( 'wsp_exclude_cpt_author' );
 	unregister_setting('wp-sitemap-page', 'wsp_posts_by_category');
 }
 
+
+/***************************************************************
+ * UPGRADE
+ ***************************************************************/
+
+// Manage the upgrade to version 1.1.0
+if (get_option('wsp_version_key') != WSP_VERSION_NUM) {
+    // Add option
+	
+	// by default deactivate the ARCHIVE and AUTHOR
+	add_option( 'wsp_exclude_cpt_archive', '1' );
+	add_option( 'wsp_exclude_cpt_author', '1' );
+	
+    // Update the version value
+    update_option('wsp_version_key', WSP_VERSION_NUM);
+}
 
 
 /***************************************************************
@@ -114,12 +157,13 @@ function wsp_settings_page() {
  *
  * @param array $links
  * @param str $file
+ * @return array
  */
 function wsp_plugin_row_meta($links, $file) {
 	if ($file == plugin_basename(__FILE__)) {
 		$settings_page = 'wp_sitemap_page';
 		$links[] = '<a href="options-general.php?page=' . $settings_page .'">' . __('Settings','wp_sitemap_page') . '</a>';
-		$links[] = '<a href="'.WSP_DONATE_LINK.'">'.__('Donate', 'wp_sitemap_page').'</a>';
+		$links[] = '<a href="' . WSP_DONATE_LINK . '">'.__('Donate', 'wp_sitemap_page').'</a>';
 	}
 	return $links;
 }
@@ -137,6 +181,8 @@ function wsp_save_settings() {
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_pages' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_page' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_post' );
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_archive' );
+	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_author' );
 	
 	// Get the CPT (Custom Post Type)
 	$args = array(
@@ -166,7 +212,7 @@ add_action( 'admin_init', 'wsp_save_settings' );
 /**
  * Fonction de callback
  * 
- * @param $matches
+ * @param array $matches
  */
 function wsp_manage_option( array $matches = array() ) {
 	
@@ -266,12 +312,14 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// Exclude some pages
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
-	$wsp_exclude_cpt_page = get_option('wsp_exclude_cpt_page');
-	$wsp_exclude_cpt_post = get_option('wsp_exclude_cpt_post');
+	$wsp_exclude_cpt_page    = get_option('wsp_exclude_cpt_page');
+	$wsp_exclude_cpt_post    = get_option('wsp_exclude_cpt_post');
+	$wsp_exclude_cpt_archive = get_option('wsp_exclude_cpt_archive');
+	$wsp_exclude_cpt_author  = get_option('wsp_exclude_cpt_author');
 	
 	
 	//===============================================
-	// List the pages
+	// List the PAGES
 	//===============================================
 	if ( empty($wsp_exclude_cpt_page) ) {
 		
@@ -296,7 +344,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	
 	//===============================================
-	// List the posts by category
+	// List the POSTS by CATEGORY
 	//===============================================
 	if ( empty($wsp_exclude_cpt_post) ) {
 		
@@ -366,6 +414,42 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 				$return .= $list_pages;
 				$return .= '</ul>';
 			}
+		}
+	}
+	
+	
+	//===============================================
+	// List the ARCHIVES
+	//===============================================
+	
+	if ( empty($wsp_exclude_cpt_archive) ) {
+		$args = array();
+		$args['echo'] = 0;
+		
+		$list_archives = wp_get_archives($args);
+		if (!empty($list_archives)) {
+			$return .= '<h2 class="wsp-archives-title">'.__('Archives', 'wp_sitemap_page').'</h2>';
+			$return .= '<ul class="wsp-archives-list">';
+			$return .= $list_archives;
+			$return .= '</ul>';
+		}
+	}
+	
+	
+	//===============================================
+	// List the AUTHORS
+	//===============================================
+	
+	if ( empty($wsp_exclude_cpt_author) ) {
+		$args = array();
+		$args['echo'] = 0;
+		
+		$list_authors = wp_list_authors($args);
+		if (!empty($list_authors)) {
+			$return .= '<h2 class="wsp-authors-title">'.__('Authors', 'wp_sitemap_page').'</h2>';
+			$return .= '<ul class="wsp-authors-list">';
+			$return .= $list_authors;
+			$return .= '</ul>';
 		}
 	}
 	
