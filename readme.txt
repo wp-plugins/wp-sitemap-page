@@ -63,7 +63,8 @@ This plugin is available through the following languages :
 *   Italian (`it_IT`) by Nima
 *   Spanish (`es_ES`) by Raul
 *   Czech (`cs_CZ`) by [Roman Opet](https://www.high-definition.cz/)
-*   Polish (`pl_PL`) by Mariusz
+*   Polish (`pl_PL`) by [Mariusz](http://www.wordpresscup.com/)
+*   Arno (`de_DE`) by Arno
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -76,9 +77,10 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 == Changelog ==
 
 = 1.1.0 =
-* Add polish language
 * Add archives pages on the sitemap (optional)
 * Add authors pages on the sitemap (optional)
+* Improve the security
+* Add polish language
 = 1.0.12 =
 * Add czech language
 = 1.0.11 =
