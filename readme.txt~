@@ -1,10 +1,10 @@
 === WP Sitemap Page ===
 Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
-Tags: sitemap, generator, site map, html sitemap, sitemap generator, dynamic sitemap, seo
+Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.8.0
-Stable tag: 1.0.12
+Tested up to: 3.8.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 
 
@@ -62,17 +62,26 @@ This plugin is available through the following languages :
 *   Farsi/Persian (`fa_IR`) by Seyyed Mostafa Ahadzadeh
 *   Italian (`it_IT`) by Nima
 *   Spanish (`es_ES`) by Raul
-*   Czech (`cs_CZ`) by Roman
+*   Czech (`cs_CZ`) by [Roman Opet](https://www.high-definition.cz/)
+*   Polish (`pl_PL`) by [Mariusz](http://www.wordpresscup.com/)
+*   Deutsch (`de_DE`) by Arno
+*   Swedish (`sv_SE`)
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
 
 == Screenshots ==
 1. Example of a sitemap on a French blog
+2. Settings page
 
 
 == Changelog ==
 
+= 1.1.0 =
+* Add archives pages on the sitemap (optional)
+* Add authors pages on the sitemap (optional)
+* Improve the security
+* Add polish language
 = 1.0.12 =
 * Add czech language
 = 1.0.11 =

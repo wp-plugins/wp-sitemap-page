@@ -66,6 +66,7 @@ This plugin is available through the following languages :
 *   Polish (`pl_PL`) by [Mariusz](http://www.wordpresscup.com/)
 *   Deutsch (`de_DE`) by Arno
 *   Swedish (`sv_SE`)
+*   Brazilian Portuguese (`pt_BR`) by Miguel Müller
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
