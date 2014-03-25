@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 3.8.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 
 
@@ -78,6 +78,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.1.1 =
+* Add languages : Deutsch, Swedish and Brazilian Portuguese
 = 1.1.0 =
 * Add archives pages on the sitemap (optional)
 * Add authors pages on the sitemap (optional)
