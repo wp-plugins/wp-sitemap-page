@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.8.1
-Stable tag: 1.1.1
+Tested up to: 3.9.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 
 
@@ -67,6 +67,7 @@ This plugin is available through the following languages :
 *   Deutsch (`de_DE`) by Arno
 *   Swedish (`sv_SE`)
 *   Brazilian Portuguese (`pt_BR`) by Miguel Müller
+*   Finnish (`fi_FI`) by [pokis.fi](http://www.pokis.fi/)
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -78,6 +79,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.1.2 =
+* Add languages : Finnish
 = 1.1.1 =
 * Add languages : Deutsch, Swedish and Brazilian Portuguese
 = 1.1.0 =

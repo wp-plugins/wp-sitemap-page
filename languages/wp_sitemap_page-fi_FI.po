@@ -1,0 +1,171 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wp_sitemap_page\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-12 22:06+0100\n"
+"PO-Revision-Date: 2014-06-13 08:44+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;gettext;gettext_noop;_;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi_FI\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /home/tony/websites/www-dev/public/wp_plugins/wp-"
+"sitemap-page/plugin_1_0_12_next\n"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:4
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:104
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:105
+msgid "WP Sitemap Page"
+msgstr "WP Sitemap Page"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:12
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:140
+msgid "Settings"
+msgstr "Asetukset"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:15
+msgid "Please choose how you want to display the posts on the sitemap."
+msgstr "Valitse miten haluat artikkelien ja sivujen n‰kyv‰t sivustokartassa."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:17
+#, php-format
+msgid "%1$s: title of the post."
+msgstr "%1$s: Sivun tai artikkelin otsikko."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:18
+#, php-format
+msgid "%1$s: URL of the post."
+msgstr "%1$s: Sivun tai artikkelin URL."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:19
+#, php-format
+msgid "%1$s: The year of the post, four digits, for example 2004."
+msgstr "%1$s: Sivun tai artikkelin vuosi, esim. 2014."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:20
+#, php-format
+msgid "%1$s: Month of the year, for example 05."
+msgstr "%1$s: Sivun tai artikkelin kuukausi, esim. 05."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:21
+#, php-format
+msgid "%1$s: Day of the month, for example 28."
+msgstr "%1$s: Sivun tai artikkelin p‰iv‰, esim. 28."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:22
+#, php-format
+msgid "%1$s: Hour of the day, for example 15."
+msgstr "%1$s: Sivun tai artikkelin tunti, esim. 15."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:23
+#, php-format
+msgid "%1$s: Minute of the hour, for example 43."
+msgstr "%1$s: Sivun tai artikkelin minuutti, esim. 43."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:24
+#, php-format
+msgid "%1$s: Second of the minute, for example 33."
+msgstr "%1$s: Sivun tai artikkelin minuutti, esim. 33."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:25
+#, php-format
+msgid "%1$s: The unique ID # of the post, for example 423."
+msgstr "%1$s: Sivun tai artikkelin unikki #ID, esim. 423."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:26
+#, php-format
+msgid ""
+"%1$s: Category name. Nested sub-categories appear as nested directories in "
+"the URI."
+msgstr ""
+"%1$s: Kategorian nimi. Sis‰kk‰iset alakategoriat n‰kyv‰t sis‰kk‰isin‰ "
+"kansioina URLissa."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:36
+msgid "How to display the posts"
+msgstr "Miten sivut ja artikkelit n‰ytet‰‰n"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:64
+msgid "Exclude pages"
+msgstr "Pois j‰tett‰v‰t sivut/artikkelit"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:75
+msgid ""
+"Just add the IDs, separated by a comma, of the pages you want to exclude."
+msgstr "Lis‰‰ pois j‰tett‰vien sivujen/artikkelien ID:t pilkulla erotettuna."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:80
+msgid "Exclude Custom Post Type"
+msgstr "Pois j‰tett‰v‰t mukautetut artikkelityypit"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:95
+msgid "Page"
+msgstr "Sivu"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:103
+msgid "Post"
+msgstr "Artikkeli"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:111
+msgid "Archive"
+msgstr "Arkisto"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:119
+msgid "Author"
+msgstr "Kirjoittaja"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:168
+msgid "About"
+msgstr "Tietoa"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:176
+msgid "To display the sitemap, just use [wp_sitemap_page] on any page or post."
+msgstr ""
+"N‰ytt‰‰ksesi sivustokartan, lis‰‰ lyhytkoodi [wp_sitemap_page] mille tahansa "
+"sivulle tai artikkeliin."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:178
+#, php-format
+msgid "Plugin developed by <a href=\"%1$s\">Tony Archambeau</a>."
+msgstr "Lis‰osan kehitt‰nyt <a href=\"%1$s\">Tony Archambeau</a>."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:179
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:141
+msgid "Donate"
+msgstr "Lahjoita"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/settings.php:184
+#, php-format
+msgid "Translated in Russian by <a href=\"%1$s\">skesov.ru</a>."
+msgstr "Ven‰j‰ksi k‰‰nt‰nyt <a href=\"%1$s\">skesov.ru</a>."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:313
+msgid "Pages"
+msgstr "Sivut"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:330
+msgid "Posts by category"
+msgstr "Artikkelit kategorioittain"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:406
+msgid "Archives"
+msgstr "Arkistot"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:424
+msgid "Authors"
+msgstr "Kirjoittajat"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:483
+#, php-format
+msgid "Category: %1$s"
+msgstr "Kategoria: %1$s"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_12_next/wp-sitemap-page.php:543
+msgid "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"
+msgstr "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"
