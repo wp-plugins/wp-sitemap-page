@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 1.1.2
+Tested up to: 4.0.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 
 
@@ -25,12 +25,13 @@ Such a sitemap is useful for many reasons:
 = Current features =
 *   Display all pages, posts and categories
 *   Display the Custom Post Type (such as: "event", "book" …)
+*   Display only one kind of content using the attribute "only", like `[wp_sitemap_page only="page"]`
 *   Easy to use
 *   Possibility to customize the way it will be displayed through the admin panel
 *   Possibility to exclude some pages or some Custom Post Type (CPT)
 *   Posts and categories displayed hierarchically
 *   Has CSS class to customize it if you want
-*   Available in multi-languages (cf. English, French, Russian, Italian, Spanish, Dutch, Czech and Persian). You can add your own translation if you want
+*   Available in multi-languages (cf. English, French, Russian, Italian, Spanish, Dutch, Czech, Persian …). You can add your own translation if you want
 
 Want a WordPress developper? Want to add a translation? Feel free to [contact me](http://en.tonyarchambeau.com/contact.html).
 
@@ -52,6 +53,16 @@ No. The purpose of this plugin is to generate a sitemap on one of your pages. Th
 = Does it work with Custom Post Type? =
 Yes. It works fine with the Custom Post Type since version 1.0.4
 
+= Is it possible to get only the pages, the posts or a Custom Post Type? =
+Yes, it is. You only have to use one of these shortcode:
+
+*   `[wp_sitemap_page only="page"]` to display only the pages
+*   `[wp_sitemap_page only="post"]` to display only the posts
+*   `[wp_sitemap_page only="archive"]` to display only the archives
+*   `[wp_sitemap_page only="author"]` to display only the authors
+*   You can display any kind of Custom Post Type, using the keyword of the post type inside the "only" attribute. For example: `[wp_sitemap_page only="event"]` or `[wp_sitemap_page only="book"]`
+
+
 = Which languages does WP Sitemap Page support? =
 This plugin is available through the following languages :
 
@@ -68,6 +79,7 @@ This plugin is available through the following languages :
 *   Swedish (`sv_SE`)
 *   Brazilian Portuguese (`pt_BR`) by Miguel Müller
 *   Finnish (`fi_FI`) by [pokis.fi](http://www.pokis.fi/)
+*   Hungarian (`hu_HU`)
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -80,7 +92,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 == Changelog ==
 
 = 1.1.2 =
-* Add languages : Finnish
+* Filter only one kind of content using the shortcode with the attribute "only"
+* Add languages : Finnish and Hungarian
 = 1.1.1 =
 * Add languages : Deutsch, Swedish and Brazilian Portuguese
 = 1.1.0 =
@@ -127,4 +140,3 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == How to uninstall WP Sitemap Page ==
 To uninstall WP Sitemap Page, you just have to de-activate the plugin from the plugins list.
-

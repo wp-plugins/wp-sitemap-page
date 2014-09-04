@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.1.2
+Version: 1.2.0
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -310,60 +310,235 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	// init
 	$return = '';
 	
-	// Exclude some pages
+	// display only some CPT
+	// the "only" parameter always is higher than "exclude" options
+	$only_cpt = (isset($atts['only']) ? sanitize_text_field($atts['only']) : '');
+	
+	
+	// Exclude some pages (separated by a coma)
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
+	
+	// check if the attribute "only" is used
+	switch ($only_cpt) {
+		// display only PAGE
+		case 'page':
+			return wsp_return_cpt_page($wsp_exclude_pages);
+			break;
+		// display only POST
+		case 'post':
+			return wsp_return_cpt_post();
+			break;
+		// display only ARCHIVE
+		case 'archive':
+			return wsp_return_cpt_archive();
+			break;
+		// display only AUTHOR
+		case 'author':
+			return wsp_return_cpt_author();
+			break;
+		// empty
+		case '':
+			// nothing but do
+			break;
+		default:
+			// check if it's the name of a CPT
+			
+			// extract CPT object
+			$cpt = get_post_type_object( $only_cpt );
+			
+			if ( !empty($cpt) ) {
+				return wsp_return_cpt_items( $cpt, $only_cpt, $wsp_exclude_pages );
+			}
+			// end
+	}
+	
+	
+	//===============================================
+	// Otherwise, display traditionnal sitemap
+	//===============================================
+	
+	// exclude some custome post type (page, post, archive or author)
+	// value : 0=do not exclude ; 1=exclude
 	$wsp_exclude_cpt_page    = get_option('wsp_exclude_cpt_page');
 	$wsp_exclude_cpt_post    = get_option('wsp_exclude_cpt_post');
 	$wsp_exclude_cpt_archive = get_option('wsp_exclude_cpt_archive');
 	$wsp_exclude_cpt_author  = get_option('wsp_exclude_cpt_author');
 	
 	
-	//===============================================
 	// List the PAGES
-	//===============================================
 	if ( empty($wsp_exclude_cpt_page) ) {
-		
-		// define the way the pages should be displayed
-		$args = array();
-		$args['title_li'] = '';
-		$args['echo']     = '0';
-		
-		// exclude some pages ?
-		if (!empty($wsp_exclude_pages)) {
-			$args['exclude'] = $wsp_exclude_pages;
-		}
-		
-		$list_pages = wp_list_pages($args);
-		if (!empty($list_pages)) {
-			$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>';
-			$return .= '<ul class="wsp-pages-list">';
-			$return .= $list_pages;
-			$return .= '</ul>';
-		}
+		$return .= wsp_return_cpt_page($wsp_exclude_pages);
 	}
 	
-	
-	//===============================================
 	// List the POSTS by CATEGORY
-	//===============================================
 	if ( empty($wsp_exclude_cpt_post) ) {
-		
-		// Get the categories
-		$cats = get_categories();
-		
-		if (!empty($cats)) {
-			$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>';
-			
-			// Get the categories
-			$cats = wsp_generateMultiArray($cats);
-			$return .= wsp_htmlFromMultiArray($cats);
-		}
+		$return .= wsp_return_cpt_post();
 	}
 	
-	
-	//===============================================
 	// List the CPT
-	//===============================================
+	$return .= wsp_return_cpt_lists($wsp_exclude_pages);
+	
+	// List the ARCHIVES
+	if ( empty($wsp_exclude_cpt_archive) ) {
+		$return .= wsp_return_cpt_archive();
+	}
+	
+	// List the AUTHORS
+	if ( empty($wsp_exclude_cpt_author) ) {
+		$return .= wsp_return_cpt_author();
+	}
+	
+	// return the content
+	return $return;
+}
+add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
+
+
+/**
+ * Return list of pages
+ * 
+ * @param str $return
+ * @param str $wsp_exclude_pages
+ */
+function wsp_return_cpt_page($wsp_exclude_pages) {
+	
+	// init
+	$return = '';
+	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['title_li'] = '';
+	$args['echo']     = '0';
+	
+	// exclude some pages ?
+	if (!empty($wsp_exclude_pages)) {
+		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
+	// get data
+	$list_pages = wp_list_pages($args);
+	
+	// check it's not empty
+	if (empty($list_pages)) {
+		return '';
+	}
+	
+	// add content
+	$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>'."\n";
+	$return .= '<ul class="wsp-pages-list">'."\n";
+	$return .= $list_pages;
+	$return .= '</ul>'."\n";
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of posts in the categories
+ * 
+ * @param str $return
+ */
+function wsp_return_cpt_post() {
+	
+	// init
+	$return = '';
+	
+	// Get the categories
+	$cats = get_categories();
+	
+	// check it's not empty
+	if (empty($cats)) {
+		return '';
+	}
+	
+	// Get the categories
+	$cats = wsp_generateMultiArray($cats);
+	
+	// add content
+	$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
+	$return .= wsp_htmlFromMultiArray($cats);
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of archives
+ * 
+ * @param str $return
+ */
+function wsp_return_cpt_archive() {
+	
+	// init
+	$return = '';
+	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['echo'] = 0;
+	
+	// get data
+	$list_archives = wp_get_archives($args);
+	
+	// check it's not empty
+	if (empty($list_archives)) {
+		return '';
+	}
+	
+	// add content
+	$return .= '<h2 class="wsp-archives-title">'.__('Archives', 'wp_sitemap_page').'</h2>'."\n";
+	$return .= '<ul class="wsp-archives-list">'."\n";
+	$return .= $list_archives;
+	$return .= '</ul>'."\n";
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of authors
+ * 
+ * @param str $return
+ */
+function wsp_return_cpt_author() {
+	
+	// init
+	$return = '';
+	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['echo'] = 0;
+	
+	// get data
+	$list_authors = wp_list_authors($args);
+	
+	// check it's not empty
+	if (empty($list_authors)) {
+		return '';
+	}
+	
+	// add content
+	$return .= '<h2 class="wsp-authors-title">'.__('Authors', 'wp_sitemap_page').'</h2>'."\n";
+	$return .= '<ul class="wsp-authors-list">'."\n";
+	$return .= $list_authors;
+	$return .= '</ul>'."\n";
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of all other custom post type
+ * 
+ * @param str $return
+ */
+function wsp_return_cpt_lists($wsp_exclude_pages) {
+	
+	// init
+	$return = '';
 	
 	// Get the CPT (Custom Post Type)
 	$args = array(
@@ -371,6 +546,11 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 		'_builtin' => false
 	);
 	$post_types = get_post_types( $args, 'names' ); 
+	
+	// check it's not empty
+	if (empty($post_types)) {
+		return '';
+	}
 	
 	// list all the CPT
 	foreach ( $post_types as $post_type ) {
@@ -382,80 +562,60 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 		$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
 		
 		if ( empty($wsp_exclude_cpt) ) {
-			
-			// List the pages
-			$list_pages = '';
-			
-			// define the way the pages should be displayed
-			$args = array();
-			$args['post_type'] = $post_type;
-			$args['posts_per_page'] = 999999;
-			$args['suppress_filters'] = 0;
-			
-			// exclude some pages ?
-			if (!empty($wsp_exclude_pages)) {
-				$args['exclude'] = $wsp_exclude_pages;
-			}
-			
-			// Query to get the current custom post type
-			$posts_cpt = get_posts( $args );
-			
-			// List all the results
-			if( $posts_cpt ) {
-				foreach( $posts_cpt as $post_cpt ) {
-					$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>';
-				}
-			}
-			
-			// Return the data (if it exists)
-			if (!empty($list_pages)) {
-				$return .= '<h2 class="wsp-'.$post_type.'s-list">' . $cpt->label . '</h2>';
-				$return .= '<ul class="wsp-'.$post_type.'s-list">';
-				$return .= $list_pages;
-				$return .= '</ul>';
-			}
+			$return .= wsp_return_cpt_items( $cpt, $post_type, $wsp_exclude_pages );
 		}
 	}
 	
-	
-	//===============================================
-	// List the ARCHIVES
-	//===============================================
-	
-	if ( empty($wsp_exclude_cpt_archive) ) {
-		$args = array();
-		$args['echo'] = 0;
-		
-		$list_archives = wp_get_archives($args);
-		if (!empty($list_archives)) {
-			$return .= '<h2 class="wsp-archives-title">'.__('Archives', 'wp_sitemap_page').'</h2>';
-			$return .= '<ul class="wsp-archives-list">';
-			$return .= $list_archives;
-			$return .= '</ul>';
-		}
-	}
-	
-	
-	//===============================================
-	// List the AUTHORS
-	//===============================================
-	
-	if ( empty($wsp_exclude_cpt_author) ) {
-		$args = array();
-		$args['echo'] = 0;
-		
-		$list_authors = wp_list_authors($args);
-		if (!empty($list_authors)) {
-			$return .= '<h2 class="wsp-authors-title">'.__('Authors', 'wp_sitemap_page').'</h2>';
-			$return .= '<ul class="wsp-authors-list">';
-			$return .= $list_authors;
-			$return .= '</ul>';
-		}
-	}
-	
+	// return content
 	return $return;
 }
-add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
+
+
+/**
+ * Return list of all other custom post type
+ * 
+ * @param str $return
+ */
+function wsp_return_cpt_items( $cpt, $post_type, $wsp_exclude_pages ) {
+	
+	// init
+	$return = '';
+	
+	// List the pages
+	$list_pages = '';
+	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['post_type'] = $post_type;
+	$args['posts_per_page'] = 999999;
+	$args['suppress_filters'] = 0;
+	
+	// exclude some pages ?
+	if (!empty($wsp_exclude_pages)) {
+		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
+	// Query to get the current custom post type
+	$posts_cpt = get_posts( $args );
+	
+	// List all the results
+	if ( !empty($posts_cpt) ) {
+		foreach( $posts_cpt as $post_cpt ) {
+			$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>'."\n";
+		}
+	}
+	
+	// Return the data (if it exists)
+	if (!empty($list_pages)) {
+		$return .= '<h2 class="wsp-'.$post_type.'s-title">' . $cpt->label . '</h2>'."\n";
+		$return .= '<ul class="wsp-'.$post_type.'s-list">'."\n";
+		$return .= $list_pages;
+		$return .= '</ul>'."\n";
+	}
+	
+	// return content
+	return $return;
+}
 
 
 /**
