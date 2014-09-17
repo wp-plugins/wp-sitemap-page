@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.2.0
+Version: 1.3.0
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -38,14 +38,17 @@ if ( !defined('WSP_USER_PLUGIN_URL') ) {
 	define('WSP_USER_PLUGIN_URL', WP_PLUGIN_URL .'/'. WSP_USER_NAME );
 }
 
-if ( !defined('WSP_USER_PLUGIN_URL') ) {
-	define('WSP_VERSION', '1.0.8');
+if ( !defined('WSP_PLUGIN_NAME') ) {
+	define('WSP_PLUGIN_NAME', 'wp_sitemap_page');
+}
+if ( !defined('WSP_VERSION') ) {
+	define('WSP_VERSION', '1.3.0');
 }
 if ( !defined('WSP_DONATE_LINK') ) {
 	define('WSP_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=FQKK22PPR3EJE&amp;lc=GB&amp;item_name=WP%20Sitemap%20Page&amp;item_number=wp%2dsitemap%2dpage&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
 }
 if (!defined('WSP_VERSION_NUM')) {
-	define('WSP_VERSION_NUM', '1.1.0');
+	define('WSP_VERSION_NUM', '1.3.0');
 }
 
 
@@ -95,6 +98,7 @@ function wsp_uninstall() {
 	delete_option( 'wsp_exclude_cpt_post' );
 	delete_option( 'wsp_exclude_cpt_archive' );
 	delete_option( 'wsp_exclude_cpt_author' );
+	delete_option( 'wsp_is_display_copyright' );
 	unregister_setting('wp-sitemap-page', 'wsp_posts_by_category');
 }
 
@@ -183,6 +187,7 @@ function wsp_save_settings() {
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_post' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_archive' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_author' );
+	register_setting( 'wp-sitemap-page', 'wsp_is_display_copyright' );
 	
 	// Get the CPT (Custom Post Type)
 	$args = array(
@@ -292,6 +297,67 @@ function wsp_manage_option( array $matches = array() ) {
 }
 
 
+/***************************************************************
+ * Tabs
+ ***************************************************************/
+
+/**
+ * Get the current tab
+ * 
+ * @return Ambigous <string, mixed>|string
+ */
+function wsp_get_current_tab() {
+	if (isset($_GET['tab'])) {
+		return esc_html($_GET['tab']);
+	} else {
+		return 'main';
+	}
+}
+
+
+/**
+ * Display the tabs
+ */
+function wsp_show_tabs() {
+	global $wp_db_version;
+	
+	// Get the current tab
+	$current_tab = wsp_get_current_tab();
+	
+	// All tabs
+	$tabs = array();
+	$tabs['main']    = __('Settings', 'wp_sitemap_page');
+	$tabs['about']   = __('How to use', 'wp_sitemap_page');
+	
+	// Generate the tab links
+	$tab_links = array();
+	foreach ($tabs as $tab_k => $tab_name) {
+		$tab_curent = ($tab_k === $current_tab ? ' nav-tab-active' : '' );
+		$tab_url = '?page=' . WSP_PLUGIN_NAME .'&amp;tab='.$tab_k;
+		$tab_links[] = '<a class="nav-tab'.$tab_curent.'" href="'.$tab_url.'">'.$tab_name.'</a>';
+	}
+	
+	// Since the 25 oct. 2010 WordPress include the tabs (in CSS)
+	// The 25 oct. 2010 = WordPress version was "3.1-alpha"
+	if ( $wp_db_version >= 15477 ) {
+		// Tabs in CSS
+		?>
+		<h2 class="nav-tab-wrapper">
+			<?php echo implode("\n", $tab_links); ?>
+		</h2>
+		<?php
+	} else {
+		// Tabs without CSS (instead, separate links with "|")
+		?>
+		<div>
+			<?php echo implode(' | ', $tab_links); ?>
+		</div>
+		<?php
+	}
+	
+	return;
+}
+
 
 /***************************************************************
  * Generate the sitemap
@@ -317,24 +383,39 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// Exclude some pages (separated by a coma)
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
+	$wsp_is_display_copyright = get_option('wsp_is_display_copyright');
+	
+	$copyright_link = '';
+	// add a copyright link
+	if ($wsp_is_display_copyright==1) {
+		$copyright_link = '<p><a href="http://wordpress.org/plugins/wp-sitemap-page/">'.__('Powered by "WP Sitemap Page"').'</a></p>';
+	}
 	
 	// check if the attribute "only" is used
 	switch ($only_cpt) {
 		// display only PAGE
 		case 'page':
-			return wsp_return_cpt_page($wsp_exclude_pages);
+			return wsp_return_content_type_page($wsp_exclude_pages).$copyright_link;
 			break;
 		// display only POST
 		case 'post':
-			return wsp_return_cpt_post();
+			return wsp_return_content_type_post().$copyright_link;
 			break;
 		// display only ARCHIVE
 		case 'archive':
-			return wsp_return_cpt_archive();
+			return wsp_return_content_type_archive().$copyright_link;
 			break;
 		// display only AUTHOR
 		case 'author':
-			return wsp_return_cpt_author();
+			return wsp_return_content_type_author().$copyright_link;
+			break;
+		// display only CATEGORY
+		case 'category':
+			return wsp_return_content_type_categories().$copyright_link;
+			break;
+		// display only TAGS
+		case 'tag':
+			return wsp_return_content_type_tag().$copyright_link;
 			break;
 		// empty
 		case '':
@@ -347,7 +428,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			$cpt = get_post_type_object( $only_cpt );
 			
 			if ( !empty($cpt) ) {
-				return wsp_return_cpt_items( $cpt, $only_cpt, $wsp_exclude_pages );
+				return wsp_return_content_type_items( $cpt, $only_cpt, $wsp_exclude_pages );
 			}
 			// end
 	}
@@ -367,29 +448,29 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the PAGES
 	if ( empty($wsp_exclude_cpt_page) ) {
-		$return .= wsp_return_cpt_page($wsp_exclude_pages);
+		$return .= wsp_return_content_type_page($wsp_exclude_pages);
 	}
 	
 	// List the POSTS by CATEGORY
 	if ( empty($wsp_exclude_cpt_post) ) {
-		$return .= wsp_return_cpt_post();
+		$return .= wsp_return_content_type_post();
 	}
 	
 	// List the CPT
-	$return .= wsp_return_cpt_lists($wsp_exclude_pages);
+	$return .= wsp_return_content_type_lists($wsp_exclude_pages);
 	
 	// List the ARCHIVES
 	if ( empty($wsp_exclude_cpt_archive) ) {
-		$return .= wsp_return_cpt_archive();
+		$return .= wsp_return_content_type_archive();
 	}
 	
 	// List the AUTHORS
 	if ( empty($wsp_exclude_cpt_author) ) {
-		$return .= wsp_return_cpt_author();
+		$return .= wsp_return_content_type_author();
 	}
 	
 	// return the content
-	return $return;
+	return $return.$copyright_link;
 }
 add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
 
@@ -400,7 +481,7 @@ add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
  * @param str $return
  * @param str $wsp_exclude_pages
  */
-function wsp_return_cpt_page($wsp_exclude_pages) {
+function wsp_return_content_type_page($wsp_exclude_pages) {
 	
 	// init
 	$return = '';
@@ -439,7 +520,7 @@ function wsp_return_cpt_page($wsp_exclude_pages) {
  * 
  * @param str $return
  */
-function wsp_return_cpt_post() {
+function wsp_return_content_type_post() {
 	
 	// init
 	$return = '';
@@ -465,11 +546,71 @@ function wsp_return_cpt_post() {
 
 
 /**
+ * Return list of posts in the categories
+ * 
+ * @param str $return
+ */
+function wsp_return_content_type_categories() {
+	
+	// init
+	$return = '';
+	
+	// Get the categories
+	$cats = get_categories();
+	
+	// check it's not empty
+	if (empty($cats)) {
+		return '';
+	}
+	
+	// add content
+	$return .= '<h2 class="wsp-categories-list">'.__('Categories', 'wp_sitemap_page').'</h2>'."\n";
+	
+	foreach ($cats as $cat) {
+		$return .= "\t".'<li><a href="'.get_category_link($cat->cat_ID).'">'.$cat->name.'</a></li>'."\n";
+	}
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of posts in the categories
+ * 
+ * @param str $return
+ */
+function wsp_return_content_type_tag() {
+	
+	// init
+	$return = '';
+	
+	// Get the categories
+	$posttags = get_tags();
+	
+	// check it's not empty
+	if (empty($posttags)) {
+		return '';
+	}
+	
+	// add content
+	$return .= '<h2 class="wsp-tags-list">'.__('Tags', 'wp_sitemap_page').'</h2>'."\n";
+	
+	foreach($posttags as $tag) {
+		$return .= "\t".'<li><a href="'.get_tag_link($tag->term_id).'">'.$tag->name.'</a></li>'."\n";
+	}
+	
+	// return content
+	return $return;
+}
+
+
+/**
  * Return list of archives
  * 
  * @param str $return
  */
-function wsp_return_cpt_archive() {
+function wsp_return_content_type_archive() {
 	
 	// init
 	$return = '';
@@ -502,7 +643,7 @@ function wsp_return_cpt_archive() {
  * 
  * @param str $return
  */
-function wsp_return_cpt_author() {
+function wsp_return_content_type_author() {
 	
 	// init
 	$return = '';
@@ -535,7 +676,7 @@ function wsp_return_cpt_author() {
  * 
  * @param str $return
  */
-function wsp_return_cpt_lists($wsp_exclude_pages) {
+function wsp_return_content_type_lists($wsp_exclude_pages) {
 	
 	// init
 	$return = '';
@@ -562,7 +703,7 @@ function wsp_return_cpt_lists($wsp_exclude_pages) {
 		$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
 		
 		if ( empty($wsp_exclude_cpt) ) {
-			$return .= wsp_return_cpt_items( $cpt, $post_type, $wsp_exclude_pages );
+			$return .= wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages );
 		}
 	}
 	
@@ -576,7 +717,7 @@ function wsp_return_cpt_lists($wsp_exclude_pages) {
  * 
  * @param str $return
  */
-function wsp_return_cpt_items( $cpt, $post_type, $wsp_exclude_pages ) {
+function wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages ) {
 	
 	// init
 	$return = '';

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp_sitemap_page\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-01 15:19+0100\n"
-"PO-Revision-Date: 2013-12-01 15:19+0100\n"
+"POT-Creation-Date: 2014-09-07 23:07+0100\n"
+"PO-Revision-Date: 2014-09-07 23:07+0100\n"
 "Last-Translator: Tony <archambeautony@free.fr>\n"
 "Language-Team: wp-help.ir <ahadzadeh@gmail.com>\n"
 "Language: fa_IR\n"
@@ -14,69 +14,111 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: /home/tony/websites/www-dev/public/wp_plugins/wp-"
-"sitemap-page/plugin_1_0_8\n"
+"sitemap-page/plugin_1_2_0_next\n"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:4
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:86
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:87
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:25
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:133
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:134
 msgid "WP Sitemap Page"
 msgstr "سایت مپ صفحات وردپرس"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:12
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:121
-msgid "Settings"
-msgstr "تنظیمات"
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:32
+msgid "Help us"
+msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:15
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:33
+msgid ""
+"This plugin is freely developped and distrubed to the WordPress community. "
+"Plenty of hours were necessary to develop this project."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:34
+msgid ""
+"If you like this plugin, feel free to rate it 5 stars on the WordPress.org "
+"website or to donate."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:35
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:318
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:170
+msgid "Donate"
+msgstr "کمک"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:39
+msgid "Traditionnal sitemap"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:40
+#, fuzzy
+msgid ""
+"To display a traditional sitemap, just use [wp_sitemap_page] on any page or "
+"post."
+msgstr ""
+"برای نمایش نقشه سایت، فقط استفاده  [wp_sitemap_page] در هر صفحه و یا ارسال."
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:44
+msgid "Display only some content"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:45
+msgid "Display only some kind of content using the following shortcodes."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:86
+#, fuzzy
+msgid "Customize the way to display the posts"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:89
 msgid "Please choose how you want to display the posts on the sitemap."
 msgstr "لطفا چگونگی نمایش پست بر روی نقشه رو انتخاب بفرمایید"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:17
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:91
 #, php-format
 msgid "%1$s: title of the post."
 msgstr "%1$s: عنوان پست."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:18
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:92
 #, php-format
 msgid "%1$s: URL of the post."
 msgstr "%1$s: URL از پست."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:19
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:93
 #, php-format
 msgid "%1$s: The year of the post, four digits, for example 2004."
 msgstr "%1$s: سال از ارسال، چهار رقم، مثلا 2004."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:20
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:94
 #, php-format
 msgid "%1$s: Month of the year, for example 05."
 msgstr "%1$s:ماه از سال،مثلا 05."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:21
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:95
 #, php-format
 msgid "%1$s: Day of the month, for example 28."
 msgstr "%1$s: روز از ماه،مثلا28."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:22
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:96
 #, php-format
 msgid "%1$s: Hour of the day, for example 15."
 msgstr "%1$s: ساعت از روز،مثلا15."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:23
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:97
 #, php-format
 msgid "%1$s: Minute of the hour, for example 43."
 msgstr "%1$s: دقیقه از ساعت،مثلا43.."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:24
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:98
 #, php-format
 msgid "%1$s: Second of the minute, for example 33."
 msgstr "%1$s:ثانیه از دقیقه،مثلا33."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:25
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:99
 #, php-format
 msgid "%1$s: The unique ID # of the post, for example 423."
 msgstr "%1$s: ID منحصر به فرد # از پست، به عنوان مثال 423."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:26
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:100
 #, php-format
 msgid ""
 "%1$s: Category name. Nested sub-categories appear as nested directories in "
@@ -85,73 +127,169 @@ msgstr ""
 "%1$s: دسته بندی نام. تو در تو زیر مجموعه به عنوان دایرکتوری های تو در تو در "
 "URI ظاهر می شود."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:36
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:108
 msgid "How to display the posts"
 msgstr "چگونه پست نمایش داده شود"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:64
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:131
+#, fuzzy, php-format
+msgid "Initial way to display the content: %1$s"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:142
+msgid "Exclude from traditional sitemap"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:150
 msgid "Exclude pages"
 msgstr "به غیر از صفحات"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:75
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:161
 msgid ""
 "Just add the IDs, separated by a comma, of the pages you want to exclude."
 msgstr ""
 "جهت اضافه کردن ID ها،جدا کنید بوسیله کاماصفحاتی را که نمیخواهید به نمایش در "
 "بیایند."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:80
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:166
 msgid "Exclude Custom Post Type"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:93
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:181
 #, fuzzy
 msgid "Page"
 msgstr "صفحات"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:101
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:189
 msgid "Post"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:150
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:197
+msgid "Archive"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:205
+msgid "Author"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:239
+msgid "Display the plugin link"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:248
+msgid "Display the plugin name with a link at the bottom of the sitemap."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:263
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:330
+msgid "How to use"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:266
+msgid ""
+"You can use any of the following shortcodes in the content of your pages (or "
+"posts) to display a dynamic sitemap."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:269
+msgid "To display a traditionnal sitemap"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:270
+#, fuzzy
+msgid "To display the posts by category"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:271
+#, fuzzy
+msgid "To display the categories"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:272
+#, fuzzy
+msgid "To display the tags"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:273
+#, fuzzy
+msgid "To display the pages"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:274
+#, fuzzy
+msgid "To display the archives"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:275
+#, fuzzy
+msgid "To display the authors"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:283
+#, fuzzy, php-format
+msgid "To display the %1$s"
+msgstr "چگونه پست نمایش داده شود"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:308
 msgid "About"
 msgstr "درباره"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:158
-msgid "To display the sitemap, just use [wp_sitemap_page] on any page or post."
-msgstr ""
-"برای نمایش نقشه سایت، فقط استفاده  [wp_sitemap_page] در هر صفحه و یا ارسال."
-
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:160
-#, php-format
-msgid "Plugin developed by <a href=\"%1$s\">Tony Archambeau</a>."
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:316
+#, fuzzy, php-format
+msgid "Developed by <a href=\"%1$s\">Tony Archambeau</a>."
 msgstr ""
 "پلاگین ساخته شده <a href=\"%1$s\">Tony Archambeau</a><p><hr>.فارسی شده توسط:"
 "<a href=\"http://wp-help.ir/\">انجمن راهنمای وردپرس فارسی</a>"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:161
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:122
-msgid "Donate"
-msgstr "کمک"
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:317
+msgid "Rate the plugin on Wordpress.org"
+msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/settings.php:166
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:323
 #, php-format
 msgid "Translated in Russian by <a href=\"%1$s\">skesov.ru</a>."
 msgstr "ترجمه شده فارسی توسط <a href=\"%1$s\">سید مصطفی احدزاده</a>."
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:290
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:169
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:329
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:391
+#, fuzzy
+msgid "Powered by \"WP Sitemap Page\""
+msgstr "سایت مپ صفحات وردپرس"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:508
 msgid "Pages"
 msgstr "صفحات"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:307
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:540
 msgid "Posts by category"
 msgstr "پست ها بر اساس طبقه بندی"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:423
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:567
+#, fuzzy
+msgid "Categories"
+msgstr "دسته بندی: %1$s"
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:597
+msgid "Tags"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:631
+msgid "Archives"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:664
+msgid "Authors"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:809
 #, php-format
 msgid "Category: %1$s"
 msgstr "دسته بندی: %1$s"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_0_8/wp-sitemap-page.php:483
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:869
 msgid "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"
 msgstr "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"

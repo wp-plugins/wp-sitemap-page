@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.0.0
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 
 
@@ -58,6 +58,8 @@ Yes, it is. You only have to use one of these shortcode:
 
 *   `[wp_sitemap_page only="page"]` to display only the pages
 *   `[wp_sitemap_page only="post"]` to display only the posts
+*   `[wp_sitemap_page only="category"]` to display only the categories
+*   `[wp_sitemap_page only="tag"]` to display only the tags
 *   `[wp_sitemap_page only="archive"]` to display only the archives
 *   `[wp_sitemap_page only="author"]` to display only the authors
 *   You can display any kind of Custom Post Type, using the keyword of the post type inside the "only" attribute. For example: `[wp_sitemap_page only="event"]` or `[wp_sitemap_page only="book"]`
@@ -91,6 +93,11 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.3.0 =
+* Possibility to add a sitemap with any of these elements : category, tag, archive or author
+* Improve the back-office interface
+* Possibility to add a link about the plugin at the end of the sitemap
+* Update of the translation
 = 1.1.2 =
 * Filter only one kind of content using the shortcode with the attribute "only"
 * Add languages : Finnish and Hungarian
