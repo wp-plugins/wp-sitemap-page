@@ -3,7 +3,7 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 4.0.0
+Tested up to: 4.1.0
 Stable tag: 1.3.0
 License: GPLv2 or later
 
