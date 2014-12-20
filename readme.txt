@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.1.0
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 
 
@@ -93,6 +93,13 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.4.0 =
+* Fix bug about the missing <ul> tags
+* Fix the class attribute name of some <h2> tags
+* Do not display the titles with the attribute display_title="false". It give the opportunity to create a sitemap in any languages of your choice
+* Improve the functionnality to exclude pages and posts
+* Possibility to exclude the content protected by password
+* Add some hooks to help others developers to adapt the sitemap
 = 1.3.0 =
 * Possibility to add a sitemap with any of these elements : category, tag, archive or author
 * Improve the back-office interface

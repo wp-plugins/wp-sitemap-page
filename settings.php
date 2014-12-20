@@ -131,6 +131,22 @@ switch ($current_tab) {
 						<p class="description"><?php printf(__('Initial way to display the content: %1$s'), htmlentities($wsp_initial_posts_by_category)); ?></p>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<?php _e('Displayed multiple times', 'wp_sitemap_page'); ?>
+					</th>
+					<td>
+						<?php
+						$wsp_is_display_post_multiple_time = get_option('wsp_is_display_post_multiple_time');
+						?>
+						<label for="wsp_is_display_post_multiple_time">
+							<input type="checkbox" 
+								name="wsp_is_display_post_multiple_time" id="wsp_is_display_post_multiple_time" 
+								value="1" <?php echo ($wsp_is_display_post_multiple_time==1 ? ' checked="checked"' : ''); ?> />
+								<?php _e('Displayed in each category if posts are in multiples categories.', 'wp_sitemap_page'); ?>
+						</label>
+					</td>
+				</tr>
 				</tbody>
 			</table>
 
@@ -228,6 +244,25 @@ switch ($current_tab) {
 						?>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<?php _e('Password protected', 'wp_sitemap_page'); ?>
+					</th>
+					<td>
+						<?php
+						// Is the pages/posts/CPTs with password should be exclude from the sitemap
+						$wsp_is_exclude_password_protected = get_option('wsp_is_exclude_password_protected');
+						?>
+						<div>
+							<label for="wsp_is_exclude_password_protected">
+								<input type="checkbox" 
+									name="wsp_is_exclude_password_protected" id="wsp_is_exclude_password_protected" 
+									value="1" <?php echo ($wsp_is_exclude_password_protected==1 ? ' checked="checked"' : ''); ?> />
+									<?php _e('Exclude content protected by password', 'wp_sitemap_page'); ?>
+							</label>
+						</div>
+					</td>
+				</tr>
 				</tbody>
 			</table>
 
@@ -282,6 +317,7 @@ switch ($current_tab) {
 					?>
 					<li><strong>[wp_sitemap_page only="<?php echo $cpt->name; ?>"]</strong> <?php printf(__('To display the %1$s', 'wp_sitemap_page'), strtolower($cpt->label)); ?></li>
 				<?php endforeach; ?>
+				<li><strong>[wp_sitemap_page display_title="false"]</strong> <?php _e('To display a traditionnal sitemap without the title', 'wp_sitemap_page'); ?></li>
 			</ul>
 			
 			</div><!-- .inside -->

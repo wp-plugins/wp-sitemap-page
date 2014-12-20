@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp_sitemap_page\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-07 22:36+0100\n"
-"PO-Revision-Date: 2014-09-07 22:37+0100\n"
+"POT-Creation-Date: 2014-12-20 02:03+0100\n"
+"PO-Revision-Date: 2014-12-20 02:13+0100\n"
 "Last-Translator: Tony <archambeautony@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -14,264 +14,284 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: /home/tony/websites/www-dev/public/wp_plugins/wp-"
-"sitemap-page/plugin_1_2_0_next\n"
+"sitemap-page/plugin_1_3_0_next\n"
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:25
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:133
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:134
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:25
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:135
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:136
 msgid "WP Sitemap Page"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:32
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:32
 msgid "Help us"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:33
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:33
 msgid ""
 "This plugin is freely developped and distrubed to the WordPress community. "
 "Plenty of hours were necessary to develop this project."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:34
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:34
 msgid ""
 "If you like this plugin, feel free to rate it 5 stars on the WordPress.org "
 "website or to donate."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:35
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:318
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:170
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:35
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:354
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:172
 msgid "Donate"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:39
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:39
 msgid "Traditionnal sitemap"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:40
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:40
 msgid ""
 "To display a traditional sitemap, just use [wp_sitemap_page] on any page or "
 "post."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:44
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:44
 msgid "Display only some content"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:45
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:45
 msgid "Display only some kind of content using the following shortcodes."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:86
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:86
 msgid "Customize the way to display the posts"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:89
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:89
 msgid "Please choose how you want to display the posts on the sitemap."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:91
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:91
 #, php-format
 msgid "%1$s: title of the post."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:92
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:92
 #, php-format
 msgid "%1$s: URL of the post."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:93
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:93
 #, php-format
 msgid "%1$s: The year of the post, four digits, for example 2004."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:94
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:94
 #, php-format
 msgid "%1$s: Month of the year, for example 05."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:95
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:95
 #, php-format
 msgid "%1$s: Day of the month, for example 28."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:96
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:96
 #, php-format
 msgid "%1$s: Hour of the day, for example 15."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:97
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:97
 #, php-format
 msgid "%1$s: Minute of the hour, for example 43."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:98
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:98
 #, php-format
 msgid "%1$s: Second of the minute, for example 33."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:99
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:99
 #, php-format
 msgid "%1$s: The unique ID # of the post, for example 423."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:100
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:100
 #, php-format
 msgid ""
 "%1$s: Category name. Nested sub-categories appear as nested directories in "
 "the URI."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:108
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:108
 msgid "How to display the posts"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:131
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:131
 #, php-format
 msgid "Initial way to display the content: %1$s"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:142
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:136
+msgid "Displayed multiple times"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:146
+msgid "Displayed in each category if posts are in multiples categories."
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:158
 msgid "Exclude from traditional sitemap"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:150
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:166
 msgid "Exclude pages"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:161
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:177
 msgid ""
 "Just add the IDs, separated by a comma, of the pages you want to exclude."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:166
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:182
 msgid "Exclude Custom Post Type"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:181
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:197
 msgid "Page"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:189
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:205
 msgid "Post"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:197
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:213
 msgid "Archive"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:205
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:221
 msgid "Author"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:239
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:249
+msgid "Password protected"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:261
+msgid "Exclude content protected by password"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:274
 msgid "Display the plugin link"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:248
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:283
 msgid "Display the plugin name with a link at the bottom of the sitemap."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:263
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:330
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:298
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:334
 msgid "How to use"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:266
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:301
 msgid ""
 "You can use any of the following shortcodes in the content of your pages (or "
 "posts) to display a dynamic sitemap."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:269
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:304
 msgid "To display a traditionnal sitemap"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:270
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:305
 msgid "To display the posts by category"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:271
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:306
 msgid "To display the categories"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:272
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:307
 msgid "To display the tags"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:273
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:308
 msgid "To display the pages"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:274
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:309
 msgid "To display the archives"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:275
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:310
 msgid "To display the authors"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:283
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:318
 #, php-format
 msgid "To display the %1$s"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:308
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:320
+msgid "To display a traditionnal sitemap without the title"
+msgstr ""
+
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:344
 msgid "About"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:316
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:352
 #, php-format
 msgid "Developed by <a href=\"%1$s\">Tony Archambeau</a>."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:317
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:353
 msgid "Rate the plugin on Wordpress.org"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/settings.php:323
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/settings.php:359
 #, php-format
 msgid "Translated in Russian by <a href=\"%1$s\">skesov.ru</a>."
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:169
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:329
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:171
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:333
 msgid "Settings"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:391
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:404
 msgid "Powered by \"WP Sitemap Page\""
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:508
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:547
 msgid "Pages"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:540
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:583
 msgid "Posts by category"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:567
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:613
 msgid "Categories"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:597
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:647
 msgid "Tags"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:631
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:685
 msgid "Archives"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:664
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:721
 msgid "Authors"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:809
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:878
 #, php-format
 msgid "Category: %1$s"
 msgstr ""
 
-#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_2_0_next/wp-sitemap-page.php:869
+#: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_3_0_next/wp-sitemap-page.php:950
 msgid "<a href=\"{permalink}\">{title}</a> ({monthnum}/{day}/{year})"
 msgstr ""

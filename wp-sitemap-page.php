@@ -3,13 +3,13 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.3.0
+Version: 1.4.0
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
 Domain Path: /languages
 
-Copyright 2013 Tony Archambeau
+Copyright 2014 Tony Archambeau
 */
 
 
@@ -99,6 +99,8 @@ function wsp_uninstall() {
 	delete_option( 'wsp_exclude_cpt_archive' );
 	delete_option( 'wsp_exclude_cpt_author' );
 	delete_option( 'wsp_is_display_copyright' );
+	delete_option( 'wsp_is_display_post_multiple_time' );
+	delete_option( 'wsp_is_exclude_password_protected' );
 	unregister_setting('wp-sitemap-page', 'wsp_posts_by_category');
 }
 
@@ -188,6 +190,8 @@ function wsp_save_settings() {
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_archive' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_author' );
 	register_setting( 'wp-sitemap-page', 'wsp_is_display_copyright' );
+	register_setting( 'wp-sitemap-page', 'wsp_is_display_post_multiple_time' );
+	register_setting( 'wp-sitemap-page', 'wsp_is_exclude_password_protected' );
 	
 	// Get the CPT (Custom Post Type)
 	$args = array(
@@ -370,6 +374,7 @@ function wsp_show_tabs() {
  * 
  * @param $atts
  * @param $content
+ * @return str $return
  */
 function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
@@ -380,10 +385,18 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	// the "only" parameter always is higher than "exclude" options
 	$only_cpt = (isset($atts['only']) ? sanitize_text_field($atts['only']) : '');
 	
+	// display or not the title
+	$display_title = (isset($atts['display_title']) ? sanitize_text_field($atts['display_title']) : 'true');
+	$is_title_displayed = ( $display_title=='false' ? false : true );
 	
 	// Exclude some pages (separated by a coma)
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
 	$wsp_is_display_copyright = get_option('wsp_is_display_copyright');
+	$wsp_is_display_post_multiple_time = get_option('wsp_is_display_post_multiple_time');
+	$wsp_is_exclude_password_protected = get_option('wsp_is_exclude_password_protected');
+	
+	// Determine if the posts should be displayed multiple time if it is in multiple category
+	$display_post_only_once = ($wsp_is_display_post_multiple_time==1 ? false : true );
 	
 	$copyright_link = '';
 	// add a copyright link
@@ -391,31 +404,55 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 		$copyright_link = '<p><a href="http://wordpress.org/plugins/wp-sitemap-page/">'.__('Powered by "WP Sitemap Page"').'</a></p>';
 	}
 	
+	
+	// Exclude pages, posts and CTPs protected by password
+	if ($wsp_is_exclude_password_protected==1) {
+		
+		global $wpdb;
+		
+		// Obtain the password protected content
+		$sql = 'SELECT ID FROM '.$wpdb->posts.' WHERE post_status = \'publish\' AND post_password <> \'\' ';
+		$password_pages = $wpdb->get_col($sql);
+		
+		// add to the other if not empty
+		if (!empty($password_pages)) {
+			// convert array to string
+			$exclude_pages = implode(',', $password_pages);
+			
+			// Add the excluded page to the other protected page
+			if (!empty($wsp_exclude_pages)) {
+				$wsp_exclude_pages .= ','.$exclude_pages;
+			} else {
+				$wsp_exclude_pages = $exclude_pages;
+			}
+		}
+	}
+	
 	// check if the attribute "only" is used
 	switch ($only_cpt) {
 		// display only PAGE
 		case 'page':
-			return wsp_return_content_type_page($wsp_exclude_pages).$copyright_link;
+			return wsp_return_content_type_page($is_title_displayed, $wsp_exclude_pages).$copyright_link;
 			break;
 		// display only POST
 		case 'post':
-			return wsp_return_content_type_post().$copyright_link;
+			return wsp_return_content_type_post($is_title_displayed, $display_post_only_once, $wsp_exclude_pages).$copyright_link;
 			break;
 		// display only ARCHIVE
 		case 'archive':
-			return wsp_return_content_type_archive().$copyright_link;
+			return wsp_return_content_type_archive($is_title_displayed).$copyright_link;
 			break;
 		// display only AUTHOR
 		case 'author':
-			return wsp_return_content_type_author().$copyright_link;
+			return wsp_return_content_type_author($is_title_displayed).$copyright_link;
 			break;
 		// display only CATEGORY
 		case 'category':
-			return wsp_return_content_type_categories().$copyright_link;
+			return wsp_return_content_type_categories($is_title_displayed).$copyright_link;
 			break;
 		// display only TAGS
 		case 'tag':
-			return wsp_return_content_type_tag().$copyright_link;
+			return wsp_return_content_type_tag($is_title_displayed).$copyright_link;
 			break;
 		// empty
 		case '':
@@ -428,7 +465,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			$cpt = get_post_type_object( $only_cpt );
 			
 			if ( !empty($cpt) ) {
-				return wsp_return_content_type_items( $cpt, $only_cpt, $wsp_exclude_pages );
+				return wsp_return_content_type_items( $is_title_displayed, $cpt, $only_cpt, $wsp_exclude_pages );
 			}
 			// end
 	}
@@ -448,25 +485,25 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the PAGES
 	if ( empty($wsp_exclude_cpt_page) ) {
-		$return .= wsp_return_content_type_page($wsp_exclude_pages);
+		$return .= wsp_return_content_type_page($is_title_displayed, $wsp_exclude_pages);
 	}
 	
 	// List the POSTS by CATEGORY
 	if ( empty($wsp_exclude_cpt_post) ) {
-		$return .= wsp_return_content_type_post();
+		$return .= wsp_return_content_type_post($is_title_displayed, $display_post_only_once, $wsp_exclude_pages);
 	}
 	
 	// List the CPT
-	$return .= wsp_return_content_type_lists($wsp_exclude_pages);
+	$return .= wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages);
 	
 	// List the ARCHIVES
 	if ( empty($wsp_exclude_cpt_archive) ) {
-		$return .= wsp_return_content_type_archive();
+		$return .= wsp_return_content_type_archive($is_title_displayed);
 	}
 	
 	// List the AUTHORS
 	if ( empty($wsp_exclude_cpt_author) ) {
-		$return .= wsp_return_content_type_author();
+		$return .= wsp_return_content_type_author($is_title_displayed);
 	}
 	
 	// return the content
@@ -478,10 +515,11 @@ add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
 /**
  * Return list of pages
  * 
- * @param str $return
+ * @param bool $is_title_displayed
  * @param str $wsp_exclude_pages
+ * @return str $return
  */
-function wsp_return_content_type_page($wsp_exclude_pages) {
+function wsp_return_content_type_page($is_title_displayed=true, $wsp_exclude_pages) {
 	
 	// init
 	$return = '';
@@ -505,22 +543,26 @@ function wsp_return_content_type_page($wsp_exclude_pages) {
 	}
 	
 	// add content
-	$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>'."\n";
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-pages-title">'.__('Pages', 'wp_sitemap_page').'</h2>'."\n";
+	}
 	$return .= '<ul class="wsp-pages-list">'."\n";
 	$return .= $list_pages;
 	$return .= '</ul>'."\n";
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_pages_return', $return );
 }
 
 
 /**
  * Return list of posts in the categories
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @param bool $display_post_only_once
+ * @return str $return
  */
-function wsp_return_content_type_post() {
+function wsp_return_content_type_post( $is_title_displayed, $display_post_only_once, $wsp_exclude_pages=array() ) {
 	
 	// init
 	$return = '';
@@ -537,20 +579,23 @@ function wsp_return_content_type_post() {
 	$cats = wsp_generateMultiArray($cats);
 	
 	// add content
-	$return .= '<h2 class="wsp-posts-list">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
-	$return .= wsp_htmlFromMultiArray($cats);
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-posts-title">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
+	}
+	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $wsp_exclude_pages);
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_posts_return', $return );
 }
 
 
 /**
  * Return list of posts in the categories
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @return str $return
  */
-function wsp_return_content_type_categories() {
+function wsp_return_content_type_categories($is_title_displayed) {
 	
 	// init
 	$return = '';
@@ -564,23 +609,27 @@ function wsp_return_content_type_categories() {
 	}
 	
 	// add content
-	$return .= '<h2 class="wsp-categories-list">'.__('Categories', 'wp_sitemap_page').'</h2>'."\n";
-	
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-categories-title">'.__('Categories', 'wp_sitemap_page').'</h2>'."\n";
+	}
+	$return .= '<ul class="wsp-categories-list">'."\n";
 	foreach ($cats as $cat) {
 		$return .= "\t".'<li><a href="'.get_category_link($cat->cat_ID).'">'.$cat->name.'</a></li>'."\n";
 	}
+	$return .= '</ul>'."\n";
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_categories_return', $return );
 }
 
 
 /**
  * Return list of posts in the categories
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @return str $return
  */
-function wsp_return_content_type_tag() {
+function wsp_return_content_type_tag($is_title_displayed) {
 	
 	// init
 	$return = '';
@@ -594,23 +643,27 @@ function wsp_return_content_type_tag() {
 	}
 	
 	// add content
-	$return .= '<h2 class="wsp-tags-list">'.__('Tags', 'wp_sitemap_page').'</h2>'."\n";
-	
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-tags-title">'.__('Tags', 'wp_sitemap_page').'</h2>'."\n";
+	}
+	$return .= '<ul class="wsp-tags-list">'."\n";
 	foreach($posttags as $tag) {
 		$return .= "\t".'<li><a href="'.get_tag_link($tag->term_id).'">'.$tag->name.'</a></li>'."\n";
 	}
+	$return .= '</ul>'."\n";
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_tags_return', $return );
 }
 
 
 /**
  * Return list of archives
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @return str $return
  */
-function wsp_return_content_type_archive() {
+function wsp_return_content_type_archive($is_title_displayed) {
 	
 	// init
 	$return = '';
@@ -628,22 +681,25 @@ function wsp_return_content_type_archive() {
 	}
 	
 	// add content
-	$return .= '<h2 class="wsp-archives-title">'.__('Archives', 'wp_sitemap_page').'</h2>'."\n";
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-archives-title">'.__('Archives', 'wp_sitemap_page').'</h2>'."\n";
+	}
 	$return .= '<ul class="wsp-archives-list">'."\n";
 	$return .= $list_archives;
 	$return .= '</ul>'."\n";
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_archives_return', $return );
 }
 
 
 /**
  * Return list of authors
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @return str $return
  */
-function wsp_return_content_type_author() {
+function wsp_return_content_type_author($is_title_displayed) {
 	
 	// init
 	$return = '';
@@ -661,22 +717,26 @@ function wsp_return_content_type_author() {
 	}
 	
 	// add content
-	$return .= '<h2 class="wsp-authors-title">'.__('Authors', 'wp_sitemap_page').'</h2>'."\n";
+	if ($is_title_displayed==true) {
+		$return .= '<h2 class="wsp-authors-title">'.__('Authors', 'wp_sitemap_page').'</h2>'."\n";
+	}
 	$return .= '<ul class="wsp-authors-list">'."\n";
 	$return .= $list_authors;
 	$return .= '</ul>'."\n";
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_authors_return', $return );
 }
 
 
 /**
  * Return list of all other custom post type
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @param str $wsp_exclude_pages
+ * @return str $return
  */
-function wsp_return_content_type_lists($wsp_exclude_pages) {
+function wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages) {
 	
 	// init
 	$return = '';
@@ -703,7 +763,7 @@ function wsp_return_content_type_lists($wsp_exclude_pages) {
 		$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
 		
 		if ( empty($wsp_exclude_cpt) ) {
-			$return .= wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages );
+			$return .= wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $wsp_exclude_pages );
 		}
 	}
 	
@@ -715,9 +775,13 @@ function wsp_return_content_type_lists($wsp_exclude_pages) {
 /**
  * Return list of all other custom post type
  * 
- * @param str $return
+ * @param bool $is_title_displayed
+ * @param str $cpt
+ * @param str $post_type
+ * @param str $wsp_exclude_pages
+ * @return str $return
  */
-function wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages ) {
+function wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $wsp_exclude_pages ) {
 	
 	// init
 	$return = '';
@@ -748,14 +812,16 @@ function wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages ) {
 	
 	// Return the data (if it exists)
 	if (!empty($list_pages)) {
-		$return .= '<h2 class="wsp-'.$post_type.'s-title">' . $cpt->label . '</h2>'."\n";
+		if ($is_title_displayed==true) {
+			$return .= '<h2 class="wsp-'.$post_type.'s-title">' . $cpt->label . '</h2>'."\n";
+		}
 		$return .= '<ul class="wsp-'.$post_type.'s-list">'."\n";
 		$return .= $list_pages;
 		$return .= '</ul>'."\n";
 	}
 	
 	// return content
-	return $return;
+	return apply_filters( 'wsp_cpts_return', $return );
 }
 
 
@@ -764,6 +830,7 @@ function wsp_return_content_type_items( $cpt, $post_type, $wsp_exclude_pages ) {
  * 
  * @param array $arr
  * @param int $parent
+ * @return array $pages
  */
 function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
 	
@@ -790,8 +857,10 @@ function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
  * 
  * @param array $nav
  * @param bool $useUL
+ * @param bool $display_post_only_once
+ * @return str $html
  */
-function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true ) {
+function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $wsp_exclude_pages = array() ) {
 	
 	// check if not empty
 	if (empty($nav)) {
@@ -809,13 +878,13 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true ) {
 			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a>' )
 			.'</strong>'."\n";
 		
-		$post_by_cat = wsp_displayPostByCat($page->cat_ID);
+		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $wsp_exclude_pages);
 		
 		// List of posts for this category
 		$category_recursive = '';
 		if (!empty($page->sub)) {
 			// Use recursive function to get the childs categories
-			$category_recursive = wsp_htmlFromMultiArray($page->sub, false);
+			$category_recursive = wsp_htmlFromMultiArray($page->sub, false, $display_post_only_once, $wsp_exclude_pages);
 		}
 		
 		// display if it exist
@@ -846,16 +915,28 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true ) {
  * Display the multidimensional array using a recursive function
  * 
  * @param int $cat_id
+ * @param bool $display_post_only_once
+ * @return str $html
  */
-function wsp_displayPostByCat( $cat_id ) {
+function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $wsp_exclude_pages=array() ) {
 	
 	global $the_post_id;
 	
 	// init
 	$html = '';
 	
+	// define the way the pages should be displayed
+	$args = array();
+	$args['numberposts'] = 999999;
+	$args['cat'] = $cat_id;
+	
+	// exclude some pages ?
+	if (!empty($wsp_exclude_pages)) {
+		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
 	// List of posts for this category
-	$the_posts = get_posts('numberposts=9999&cat='.$cat_id);
+	$the_posts = get_posts( $args );
 	
 	// check if not empty
 	if (empty($the_posts)) {
@@ -872,12 +953,13 @@ function wsp_displayPostByCat( $cat_id ) {
 		add_option( 'wsp_posts_by_category', $wsp_posts_by_category );
 	}
 	
+	// list the posts
 	foreach ( $the_posts as $the_post ) {
 		// Display the line of a post
 		$get_category = get_the_category($the_post->ID);
 		
 		// Display the post only if it is on the deepest category
-		if ($get_category[0]->cat_ID == $cat_id) {
+		if ( $display_post_only_once==false || ($display_post_only_once==true && $get_category[0]->cat_ID == $cat_id) ) {
 			
 			// get post ID
 			$the_post_id = $the_post->ID;
