@@ -13,6 +13,14 @@ $args = array(
 );
 $post_types = get_post_types( $args, 'names' ); 
 
+// Get the Taxonomies
+$args = array(
+	'public'   => true,
+	'_builtin' => false
+	);
+$taxonomies_names = get_taxonomies( $args );
+
+
 // inital way to display the posts
 $wsp_initial_posts_by_category = '<a href="{permalink}">{title}</a>';
 ?>
@@ -81,7 +89,25 @@ switch ($current_tab) {
 	// MAIN
 	case 'main':
 		?>
-
+		
+		
+		<div class="postbox">
+			<h3 class="hndle"><span><?php _e('General settings', 'wp_sitemap_page'); ?></span></h3>
+			<div class="inside">
+			<?php
+			$wsp_add_nofollow = get_option('wsp_add_nofollow');
+			?>
+			<label for="wsp_add_nofollow">
+				<input type="checkbox" 
+					name="wsp_add_nofollow" id="wsp_add_nofollow" 
+					value="1" <?php echo ($wsp_add_nofollow==1 ? ' checked="checked"' : ''); ?> />
+					<?php _e('Add a nofollow attribute to the links.', 'wp_sitemap_page'); ?>
+			</label>
+			<p class="description"><?php _e('Please be advice to avoid this feature as it may hurt your SEO (Search Engine Optimization), if you don\'t know what it is.'); ?></p>
+			</div><!-- .inside -->
+		</div><!-- .postbox -->
+		
+		
 		<div class="postbox">
 			<h3 class="hndle"><span><?php _e('Customize the way to display the posts', 'wp_sitemap_page'); ?></span></h3>
 			<div class="inside">
@@ -246,6 +272,38 @@ switch ($current_tab) {
 				</tr>
 				<tr>
 					<th scope="row">
+						<?php _e('Exclude taxonomies', 'wp_sitemap_page'); ?>
+					</th>
+					<td>
+						<?php
+						// list all the taxonomies
+						foreach ( $taxonomies_names as $taxonomy_name ) {
+							
+							// Extract
+							$taxonomy_obj = get_taxonomy( $taxonomy_name );
+							
+							// get some data
+							$taxonomy_name = $taxonomy_obj->name;
+							$taxonomy_label = $taxonomy_obj->label;
+							
+							// Is this CPT already excluded ?
+							$wsp_exclude_taxonomy = get_option('wsp_exclude_taxonomy_'.$taxonomy_name);
+							?>
+							<div>
+								<label for="wsp_exclude_taxonomy_<?php echo $taxonomy_name; ?>">
+									<input type="checkbox" 
+										name="wsp_exclude_taxonomy_<?php echo $taxonomy_name; ?>" id="wsp_exclude_taxonomy_<?php echo $taxonomy_name; ?>" 
+										value="1" <?php echo ($wsp_exclude_taxonomy=='1' ? ' checked="checked"' : ''); ?> />
+										<?php echo $taxonomy_label; ?>
+								</label>
+							</div>
+							<?php
+						}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
 						<?php _e('Password protected', 'wp_sitemap_page'); ?>
 					</th>
 					<td>
@@ -317,7 +375,21 @@ switch ($current_tab) {
 					?>
 					<li><strong>[wp_sitemap_page only="<?php echo $cpt->name; ?>"]</strong> <?php printf(__('To display the %1$s', 'wp_sitemap_page'), strtolower($cpt->label)); ?></li>
 				<?php endforeach; ?>
+				<?php
+				// list all the taxonomies
+				foreach ( $taxonomies_names as $taxonomy_name ) :
+					
+					// Extract
+					$taxonomy_obj = get_taxonomy( $taxonomy_name );
+					
+					// get some data
+					$taxonomy_name = $taxonomy_obj->name;
+					$taxonomy_label = $taxonomy_obj->label;
+					?>
+					<li><strong>[wp_sitemap_page only="<?php echo $taxonomy_name; ?>"]</strong> <?php printf(__('To display the %1$s', 'wp_sitemap_page'), strtolower($taxonomy_label)); ?></li>
+				<?php endforeach; ?>
 				<li><strong>[wp_sitemap_page display_title="false"]</strong> <?php _e('To display a traditionnal sitemap without the title', 'wp_sitemap_page'); ?></li>
+				<li><strong>[wp_sitemap_page only_private="true"]</strong> <?php _e('Display only the private page (do not works with other kind of content)', 'wp_sitemap_page'); ?></li>
 			</ul>
 			
 			</div><!-- .inside -->

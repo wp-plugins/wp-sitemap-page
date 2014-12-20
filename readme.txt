@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.1.0
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 
 
@@ -25,6 +25,7 @@ Such a sitemap is useful for many reasons:
 = Current features =
 *   Display all pages, posts and categories
 *   Display the Custom Post Type (such as: "event", "book" …)
+*   Display the taxonomies
 *   Display only one kind of content using the attribute "only", like `[wp_sitemap_page only="page"]`
 *   Easy to use
 *   Possibility to customize the way it will be displayed through the admin panel
@@ -33,7 +34,7 @@ Such a sitemap is useful for many reasons:
 *   Has CSS class to customize it if you want
 *   Available in multi-languages (cf. English, French, Russian, Italian, Spanish, Dutch, Czech, Persian …). You can add your own translation if you want
 
-Want a WordPress developper? Want to add a translation? Feel free to [contact me](http://en.tonyarchambeau.com/contact.html).
+Want a WordPress developer? Want to add a translation? Feel free to [contact me](http://en.tonyarchambeau.com/contact.html).
 
 
 == Installation ==
@@ -93,6 +94,10 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.0 =
+* Add the taxonomy
+* Feature to add a nofollow attribute to the page, post and custom post type links
+* Feature to show only the private pages
 = 1.4.0 =
 * Fix bug about the missing &lt;ul&gt; tags
 * Fix the class attribute name of some &lt;h2&gt; tags

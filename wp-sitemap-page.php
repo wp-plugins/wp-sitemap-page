@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.4.0
+Version: 1.5.0
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -98,6 +98,7 @@ function wsp_uninstall() {
 	delete_option( 'wsp_exclude_cpt_post' );
 	delete_option( 'wsp_exclude_cpt_archive' );
 	delete_option( 'wsp_exclude_cpt_author' );
+	delete_option( 'wsp_add_nofollow' );
 	delete_option( 'wsp_is_display_copyright' );
 	delete_option( 'wsp_is_display_post_multiple_time' );
 	delete_option( 'wsp_is_exclude_password_protected' );
@@ -189,6 +190,7 @@ function wsp_save_settings() {
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_post' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_archive' );
 	register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_author' );
+	register_setting( 'wp-sitemap-page', 'wsp_add_nofollow' );
 	register_setting( 'wp-sitemap-page', 'wsp_is_display_copyright' );
 	register_setting( 'wp-sitemap-page', 'wsp_is_display_post_multiple_time' );
 	register_setting( 'wp-sitemap-page', 'wsp_is_exclude_password_protected' );
@@ -209,6 +211,21 @@ function wsp_save_settings() {
 		// register settings
 		register_setting( 'wp-sitemap-page', 'wsp_exclude_cpt_'.$cpt->name );
 	}
+	
+	// Get the Taxonomies
+	$args = array(
+		'public'   => true,
+		'_builtin' => false
+		);
+	$taxonomies_names = get_taxonomies( $args );
+	
+	// list all the taxonomies
+	foreach ( $taxonomies_names as $taxonomy_name ) {
+		
+		// register settings
+		register_setting( 'wp-sitemap-page', 'wsp_exclude_taxonomy_'.$taxonomy_name );
+	}
+	
 } 
 add_action( 'admin_init', 'wsp_save_settings' );
 
@@ -389,14 +406,22 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	$display_title = (isset($atts['display_title']) ? sanitize_text_field($atts['display_title']) : 'true');
 	$is_title_displayed = ( $display_title=='false' ? false : true );
 	
+	// get only the private page/post ...
+	$only_private = (isset($atts['only_private']) ? sanitize_text_field($atts['only_private']) : 'false');
+	$is_get_only_private = ( $only_private=='true' ? true : false );
+	
 	// Exclude some pages (separated by a coma)
 	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
+	$wsp_add_nofollow = get_option('wsp_add_nofollow');
 	$wsp_is_display_copyright = get_option('wsp_is_display_copyright');
 	$wsp_is_display_post_multiple_time = get_option('wsp_is_display_post_multiple_time');
 	$wsp_is_exclude_password_protected = get_option('wsp_is_exclude_password_protected');
 	
 	// Determine if the posts should be displayed multiple time if it is in multiple category
 	$display_post_only_once = ($wsp_is_display_post_multiple_time==1 ? false : true );
+	
+	// Determine if the posts should be displayed multiple time if it is in multiple category
+	$display_nofollow = ($wsp_add_nofollow==1 ? true : false );
 	
 	$copyright_link = '';
 	// add a copyright link
@@ -432,27 +457,27 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	switch ($only_cpt) {
 		// display only PAGE
 		case 'page':
-			return wsp_return_content_type_page($is_title_displayed, $wsp_exclude_pages).$copyright_link;
+			return wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages).$copyright_link;
 			break;
 		// display only POST
 		case 'post':
-			return wsp_return_content_type_post($is_title_displayed, $display_post_only_once, $wsp_exclude_pages).$copyright_link;
+			return wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages).$copyright_link;
 			break;
 		// display only ARCHIVE
 		case 'archive':
-			return wsp_return_content_type_archive($is_title_displayed).$copyright_link;
+			return wsp_return_content_type_archive($is_title_displayed, $display_nofollow).$copyright_link;
 			break;
 		// display only AUTHOR
 		case 'author':
-			return wsp_return_content_type_author($is_title_displayed).$copyright_link;
+			return wsp_return_content_type_author($is_title_displayed, $display_nofollow).$copyright_link;
 			break;
 		// display only CATEGORY
 		case 'category':
-			return wsp_return_content_type_categories($is_title_displayed).$copyright_link;
+			return wsp_return_content_type_categories($is_title_displayed, $display_nofollow).$copyright_link;
 			break;
 		// display only TAGS
 		case 'tag':
-			return wsp_return_content_type_tag($is_title_displayed).$copyright_link;
+			return wsp_return_content_type_tag($is_title_displayed, $display_nofollow).$copyright_link;
 			break;
 		// empty
 		case '':
@@ -465,7 +490,14 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			$cpt = get_post_type_object( $only_cpt );
 			
 			if ( !empty($cpt) ) {
-				return wsp_return_content_type_items( $is_title_displayed, $cpt, $only_cpt, $wsp_exclude_pages );
+				return wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $only_cpt, $wsp_exclude_pages );
+			}
+			
+			// check if it's a taxonomy
+			$taxonomy_obj = get_taxonomy( $only_cpt );
+			
+			if ( !empty($taxonomy_obj) ) {
+				return wsp_return_content_type_taxonomy_items($is_title_displayed, $display_nofollow, $taxonomy_obj, $wsp_exclude_pages);
 			}
 			// end
 	}
@@ -485,25 +517,28 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the PAGES
 	if ( empty($wsp_exclude_cpt_page) ) {
-		$return .= wsp_return_content_type_page($is_title_displayed, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages);
 	}
 	
 	// List the POSTS by CATEGORY
 	if ( empty($wsp_exclude_cpt_post) ) {
-		$return .= wsp_return_content_type_post($is_title_displayed, $display_post_only_once, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages);
 	}
 	
 	// List the CPT
-	$return .= wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages);
+	$return .= wsp_return_content_type_cpt_lists($is_title_displayed, $display_nofollow, $wsp_exclude_pages);
+	
+	// List the Taxonomies
+	$return .= wsp_return_content_type_taxonomies_lists($is_title_displayed, $display_nofollow, $wsp_exclude_pages);
 	
 	// List the ARCHIVES
 	if ( empty($wsp_exclude_cpt_archive) ) {
-		$return .= wsp_return_content_type_archive($is_title_displayed);
+		$return .= wsp_return_content_type_archive($is_title_displayed, $display_nofollow);
 	}
 	
 	// List the AUTHORS
 	if ( empty($wsp_exclude_cpt_author) ) {
-		$return .= wsp_return_content_type_author($is_title_displayed);
+		$return .= wsp_return_content_type_author($is_title_displayed, $display_nofollow);
 	}
 	
 	// return the content
@@ -519,10 +554,14 @@ add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_page($is_title_displayed=true, $wsp_exclude_pages) {
+function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_private=false, $display_nofollow=false, $wsp_exclude_pages) {
 	
 	// init
 	$return = '';
+	
+	if ($display_nofollow==true) {
+		add_filter('wp_list_pages', 'wsp_add_no_follow_to_links');
+	}
 	
 	// define the way the pages should be displayed
 	$args = array();
@@ -532,6 +571,11 @@ function wsp_return_content_type_page($is_title_displayed=true, $wsp_exclude_pag
 	// exclude some pages ?
 	if (!empty($wsp_exclude_pages)) {
 		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
+	// get only the private content
+	if ($is_get_only_private==true) {
+		$args['post_status'] = 'private';
 	}
 	
 	// get data
@@ -562,7 +606,7 @@ function wsp_return_content_type_page($is_title_displayed=true, $wsp_exclude_pag
  * @param bool $display_post_only_once
  * @return str $return
  */
-function wsp_return_content_type_post( $is_title_displayed, $display_post_only_once, $wsp_exclude_pages=array() ) {
+function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array() ) {
 	
 	// init
 	$return = '';
@@ -582,7 +626,7 @@ function wsp_return_content_type_post( $is_title_displayed, $display_post_only_o
 	if ($is_title_displayed==true) {
 		$return .= '<h2 class="wsp-posts-title">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
 	}
-	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $wsp_exclude_pages);
+	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
 	
 	// return content
 	return apply_filters( 'wsp_posts_return', $return );
@@ -595,7 +639,7 @@ function wsp_return_content_type_post( $is_title_displayed, $display_post_only_o
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_categories($is_title_displayed) {
+function wsp_return_content_type_categories($is_title_displayed=true, $display_nofollow=false) {
 	
 	// init
 	$return = '';
@@ -608,13 +652,16 @@ function wsp_return_content_type_categories($is_title_displayed) {
 		return '';
 	}
 	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
 	// add content
 	if ($is_title_displayed==true) {
 		$return .= '<h2 class="wsp-categories-title">'.__('Categories', 'wp_sitemap_page').'</h2>'."\n";
 	}
 	$return .= '<ul class="wsp-categories-list">'."\n";
 	foreach ($cats as $cat) {
-		$return .= "\t".'<li><a href="'.get_category_link($cat->cat_ID).'">'.$cat->name.'</a></li>'."\n";
+		$return .= "\t".'<li><a href="'.get_category_link($cat->cat_ID).'"'.$attr_nofollow.'>'.$cat->name.'</a></li>'."\n";
 	}
 	$return .= '</ul>'."\n";
 	
@@ -629,7 +676,7 @@ function wsp_return_content_type_categories($is_title_displayed) {
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_tag($is_title_displayed) {
+function wsp_return_content_type_tag($is_title_displayed=true, $display_nofollow=false) {
 	
 	// init
 	$return = '';
@@ -642,13 +689,16 @@ function wsp_return_content_type_tag($is_title_displayed) {
 		return '';
 	}
 	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
 	// add content
 	if ($is_title_displayed==true) {
 		$return .= '<h2 class="wsp-tags-title">'.__('Tags', 'wp_sitemap_page').'</h2>'."\n";
 	}
 	$return .= '<ul class="wsp-tags-list">'."\n";
 	foreach($posttags as $tag) {
-		$return .= "\t".'<li><a href="'.get_tag_link($tag->term_id).'">'.$tag->name.'</a></li>'."\n";
+		$return .= "\t".'<li><a href="'.get_tag_link($tag->term_id).'"'.$attr_nofollow.'>'.$tag->name.'</a></li>'."\n";
 	}
 	$return .= '</ul>'."\n";
 	
@@ -663,7 +713,7 @@ function wsp_return_content_type_tag($is_title_displayed) {
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_archive($is_title_displayed) {
+function wsp_return_content_type_archive($is_title_displayed=true, $display_nofollow=false) {
 	
 	// init
 	$return = '';
@@ -679,6 +729,9 @@ function wsp_return_content_type_archive($is_title_displayed) {
 	if (empty($list_archives)) {
 		return '';
 	}
+	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
 	
 	// add content
 	if ($is_title_displayed==true) {
@@ -699,7 +752,7 @@ function wsp_return_content_type_archive($is_title_displayed) {
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_author($is_title_displayed) {
+function wsp_return_content_type_author($is_title_displayed=true, $display_nofollow=false) {
 	
 	// init
 	$return = '';
@@ -715,6 +768,9 @@ function wsp_return_content_type_author($is_title_displayed) {
 	if (empty($list_authors)) {
 		return '';
 	}
+	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
 	
 	// add content
 	if ($is_title_displayed==true) {
@@ -736,7 +792,7 @@ function wsp_return_content_type_author($is_title_displayed) {
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages) {
+function wsp_return_content_type_cpt_lists($is_title_displayed=true, $display_nofollow=false, $wsp_exclude_pages) {
 	
 	// init
 	$return = '';
@@ -763,7 +819,7 @@ function wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages) 
 		$wsp_exclude_cpt = get_option('wsp_exclude_cpt_'.$cpt->name);
 		
 		if ( empty($wsp_exclude_cpt) ) {
-			$return .= wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $wsp_exclude_pages );
+			$return .= wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $post_type, $wsp_exclude_pages );
 		}
 	}
 	
@@ -781,7 +837,7 @@ function wsp_return_content_type_lists($is_title_displayed, $wsp_exclude_pages) 
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $wsp_exclude_pages ) {
+function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_nofollow=false, $cpt, $post_type, $wsp_exclude_pages ) {
 	
 	// init
 	$return = '';
@@ -803,10 +859,13 @@ function wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $
 	// Query to get the current custom post type
 	$posts_cpt = get_posts( $args );
 	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
 	// List all the results
 	if ( !empty($posts_cpt) ) {
 		foreach( $posts_cpt as $post_cpt ) {
-			$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'">'.$post_cpt->post_title.'</a></li>'."\n";
+			$list_pages .= '<li><a href="'.get_permalink( $post_cpt->ID ).'"'.$attr_nofollow.'>'.$post_cpt->post_title.'</a></li>'."\n";
 		}
 	}
 	
@@ -822,6 +881,100 @@ function wsp_return_content_type_items( $is_title_displayed, $cpt, $post_type, $
 	
 	// return content
 	return apply_filters( 'wsp_cpts_return', $return );
+}
+
+
+/**
+ * Return list of all other custom post type
+ * 
+ * @param bool $is_title_displayed
+ * @param str $wsp_exclude_pages
+ * @return str $return
+ */
+function wsp_return_content_type_taxonomies_lists($is_title_displayed=true, $display_nofollow=false, $wsp_exclude_pages) {
+	
+	// init
+	$return = '';
+	
+	$args = array(
+		'public'   => true,
+		'_builtin' => false
+		);
+	$taxonomies_names = get_taxonomies( $args );
+	
+	// check it's not empty
+	if (empty($taxonomies_names)) {
+		return '';
+	}
+	
+	// list all the taxonomies
+	foreach ( $taxonomies_names as $taxonomy_name ) {
+		
+		// Extract
+		$taxonomy_obj = get_taxonomy( $taxonomy_name );
+		
+		// Is this taxonomy already excluded ?
+		$wsp_exclude_taxonomy = get_option('wsp_exclude_taxonomy_'.$taxonomy_name);
+		
+		if ( empty($wsp_exclude_taxonomy) ) {
+			$return .= wsp_return_content_type_taxonomy_items( $is_title_displayed, $display_nofollow, $taxonomy_obj, $wsp_exclude_taxonomy );
+		}
+	}
+	
+	// return content
+	return $return;
+}
+
+
+/**
+ * Return list of all other taxonomies
+ * 
+ * @param bool $is_title_displayed
+ * @param object $taxonomy_obj
+ * @param str $wsp_exclude_pages
+ * @return str $return
+ */
+function wsp_return_content_type_taxonomy_items( $is_title_displayed=true, $display_nofollow=false, $taxonomy_obj, $wsp_exclude_taxonomy ) {
+	
+	// init
+	$return = '';
+	
+	// List the pages
+	$list_pages = '';
+	
+	// get some data
+	$taxonomy_name = $taxonomy_obj->name;
+	$taxonomy_label = $taxonomy_obj->label;
+	
+	// init variable to get terms of a taxonomy
+	$taxonomies = array( $taxonomy_name );
+	$args = array();
+	
+	// get the terms of this taxonomy
+	$terms = get_terms($taxonomies, $args);
+	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
+	// List all the results
+	if ( !empty($terms) ) {
+		foreach( $terms as $terms_obj ) {
+			$list_pages .= '<li><a href="'.get_term_link( $terms_obj ).'"'.$attr_nofollow.'>'.$terms_obj->name.'</a></li>'."\n";
+		}
+	}
+	
+	// Return the data (if it exists)
+	if (!empty($list_pages)) {
+		if ($is_title_displayed==true) {
+			$return .= '<h2 class="wsp-'.$taxonomy_name.'s-title">' . $taxonomy_label . '</h2>'."\n";
+		}
+		$return .= '<ul class="wsp-'.$taxonomy_name.'s-list">'."\n";
+		$return .= $list_pages;
+		$return .= '</ul>'."\n";
+	}
+	
+	// return content
+	return apply_filters( 'wsp_taxonomies_return', $return );
 }
 
 
@@ -860,7 +1013,7 @@ function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
  * @param bool $display_post_only_once
  * @return str $html
  */
-function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $wsp_exclude_pages = array() ) {
+function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $display_nofollow=false, $wsp_exclude_pages = array() ) {
 	
 	// check if not empty
 	if (empty($nav)) {
@@ -872,19 +1025,22 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
 		$html .= '<ul class="wsp-posts-list">'."\n";
 	}
 	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
 	// List all the categories
 	foreach ($nav as $page) {
 		$html .= "\t".'<li><strong class="wsp-category-title">'
-			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'">'.$page->name.'</a>' )
+			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'"'.$attr_nofollow.'>'.$page->name.'</a>' )
 			.'</strong>'."\n";
 		
-		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $wsp_exclude_pages);
+		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
 		
 		// List of posts for this category
 		$category_recursive = '';
 		if (!empty($page->sub)) {
 			// Use recursive function to get the childs categories
-			$category_recursive = wsp_htmlFromMultiArray($page->sub, false, $display_post_only_once, $wsp_exclude_pages);
+			$category_recursive = wsp_htmlFromMultiArray($page->sub, false, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
 		}
 		
 		// display if it exist
@@ -918,7 +1074,7 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
  * @param bool $display_post_only_once
  * @return str $html
  */
-function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $wsp_exclude_pages=array() ) {
+function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_nofollow=false, $wsp_exclude_pages=array() ) {
 	
 	global $the_post_id;
 	
@@ -943,11 +1099,14 @@ function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $wsp_exclu
 		return '';
 	}
 	
+	// display a nofollow attribute ?
+	$attr_nofollow = ($display_nofollow==true ? ' rel="nofollow"' : '');
+	
 	// determine the code to place in the textarea
 	$wsp_posts_by_category = get_option('wsp_posts_by_category');
 	if ( $wsp_posts_by_category === false ) {
 		// this option does not exists
-		$wsp_posts_by_category = __('<a href="{permalink}">{title}</a> ({monthnum}/{day}/{year})', 'wp_sitemap_page');
+		$wsp_posts_by_category = sprintf(__('<a href="{permalink}"%1$s>{title}</a> ({monthnum}/{day}/{year})', 'wp_sitemap_page'), $attr_nofollow);
 		
 		// save this option
 		add_option( 'wsp_posts_by_category', $wsp_posts_by_category );
@@ -973,3 +1132,16 @@ function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $wsp_exclu
 	
 	return $html;
 }
+
+
+/**
+ * Add nofollow attribute to the links of the wp_list_pages() functions
+ * 
+ * @param str $output content
+ * @return str
+ */
+function wsp_add_no_follow_to_links($output) {
+	//return wp_rel_nofollow($output);
+	return str_replace('<a href=', '<a rel="nofollow" href=',  $output);
+}
+
