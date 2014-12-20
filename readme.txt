@@ -94,8 +94,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 == Changelog ==
 
 = 1.4.0 =
-* Fix bug about the missing <ul> tags
-* Fix the class attribute name of some <h2> tags
+* Fix bug about the missing &lt;ul&gt; tags
+* Fix the class attribute name of some &lt;h2&gt; tags
 * Do not display the titles with the attribute display_title="false". It give the opportunity to create a sitemap in any languages of your choice
 * Improve the functionnality to exclude pages and posts
 * Possibility to exclude the content protected by password
