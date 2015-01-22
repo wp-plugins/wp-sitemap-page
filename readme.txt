@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.1.0
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 
 
@@ -94,6 +94,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.2 =
+* Fix a compatibility problem with WPML (more details here : http://wpml.org/forums/topic/wp-sitemap-page/ )
 = 1.5.1 =
 * Update the translation for the following language: French, Russian, German, Sweden, Italian, Spanish, Hungarian and Portuguese.
 = 1.5.0 =

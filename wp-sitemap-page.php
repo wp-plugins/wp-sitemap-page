@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.5.1
+Version: 1.5.2
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -20,7 +20,16 @@ if ( !defined('ABSPATH') ) {
 
 
 // i18n
-load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+// OLD WAY : load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+add_action( 'plugins_loaded', 'wsp_load_textdomain' );
+
+/**
+ * Load plugin textdomain.
+ * @since 1.5.2
+ */
+function wsp_load_textdomain() {
+  load_plugin_textdomain( 'wp_sitemap_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
 
 
 
