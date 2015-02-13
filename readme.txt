@@ -4,11 +4,11 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.1.0
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 
 
-Add a sitemap on one any of your page using the simple shortcode [wp_sitemap_page]. Improve the SEO and navigation of your website.
+Add a sitemap on any of your page using the simple shortcode [wp_sitemap_page]. Improve the SEO and navigation of your website.
 
 
 == Description ==
@@ -83,6 +83,7 @@ This plugin is available through the following languages :
 *   Portuguese and Brazilian Portuguese (`pt_BR`, `pt_PT`) by Miguel Müller
 *   Finnish (`fi_FI`) by [pokis.fi](http://www.pokis.fi/)
 *   Hungarian (`hu_HU`)
+*   Hebrew (`he_IL`) by Ahrale
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -94,6 +95,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.3 =
+* Add Hebrew translation
 = 1.5.2 =
 * Fix a compatibility problem with WPML (more details here : http://wpml.org/forums/topic/wp-sitemap-page/ )
 = 1.5.1 =
