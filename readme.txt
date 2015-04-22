@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 4.1.0
-Stable tag: 1.5.3
+Tested up to: 4.2.0
+Stable tag: 1.5.4
 License: GPLv2 or later
 
 
@@ -95,6 +95,9 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.4 =
+* Small fix about a core WordPress update
+* Add Bokmål translation
 = 1.5.3 =
 * Add Hebrew translation
 = 1.5.2 =

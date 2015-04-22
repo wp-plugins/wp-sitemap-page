@@ -417,7 +417,11 @@ switch ($current_tab) {
 						<div style="padding:0 5px;">
 							<?php
 							$fr_lang = array('fr_FR', 'fr_BE', 'fr_CH', 'fr_LU', 'fr_CA');
-							$is_fr = (in_array(WPLANG, $fr_lang) ? true : false);
+							// WP Constant WPLANG does not exists anymore
+							// https://core.trac.wordpress.org/changeset/29630
+							$WPLANG = get_option('WPLANG', '');
+							// check if language is in French
+							$is_fr = (in_array($WPLANG, $fr_lang) ? true : false);
 							// Get the URL author depending on the language
 							$url_author = ( $is_fr===true ? 'http://tonyarchambeau.com/' : 'http://en.tonyarchambeau.com/' );
 							?>
@@ -426,7 +430,7 @@ switch ($current_tab) {
 							<p><img src="<?php echo WSP_USER_PLUGIN_URL; ?>/images/icon-coin-24.png" alt="" style="vertical-align:middle;" /> <a href="<?php echo WSP_DONATE_LINK; ?>" target="_blank"><?php _e('Donate', 'wp_sitemap_page'); ?></a></p>
 							<?php
 							// Display the author for Russian audience
-							if (WPLANG == 'ru_RU') {
+							if ($WPLANG == 'ru_RU') {
 								?>
 								<p><img src="<?php echo WSP_USER_PLUGIN_URL; ?>/images/icon-html-code-24.png" alt="" style="vertical-align:middle;" /> <?php printf(__('Translated in Russian by <a href="%1$s">skesov.ru</a>.', 'wp_sitemap_page'), 'http://skesov.ru/'); ?></p>
 								<?php
