@@ -3,7 +3,7 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.5.4
+Version: 1.5.5
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -419,9 +419,12 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	$only_private = (isset($atts['only_private']) ? sanitize_text_field($atts['only_private']) : 'false');
 	$is_get_only_private = ( $only_private=='true' ? true : false );
 	
+	// get the kind of sort
+	$sort = (isset($atts['sort']) ? sanitize_text_field($atts['sort']) : null);
+	
 	// Exclude some pages (separated by a coma)
-	$wsp_exclude_pages = trim(get_option('wsp_exclude_pages'));
-	$wsp_add_nofollow = get_option('wsp_add_nofollow');
+	$wsp_exclude_pages        = trim(get_option('wsp_exclude_pages'));
+	$wsp_add_nofollow         = get_option('wsp_add_nofollow');
 	$wsp_is_display_copyright = get_option('wsp_is_display_copyright');
 	$wsp_is_display_post_multiple_time = get_option('wsp_is_display_post_multiple_time');
 	$wsp_is_exclude_password_protected = get_option('wsp_is_exclude_password_protected');
@@ -435,7 +438,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	$copyright_link = '';
 	// add a copyright link
 	if ($wsp_is_display_copyright==1) {
-		$copyright_link = '<p><a href="http://wordpress.org/plugins/wp-sitemap-page/">'.__('Powered by "WP Sitemap Page"').'</a></p>';
+		$copyright_link = '<p><a href="http://wordpress.org/plugins/wp-sitemap-page/">'.__('Powered by "WP Sitemap Page"', 'wp_sitemap_page').'</a></p>';
 	}
 	
 	
@@ -466,11 +469,11 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	switch ($only_cpt) {
 		// display only PAGE
 		case 'page':
-			return wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages).$copyright_link;
+			return wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages, $sort).$copyright_link;
 			break;
 		// display only POST
 		case 'post':
-			return wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages).$copyright_link;
+			return wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages, $sort).$copyright_link;
 			break;
 		// display only ARCHIVE
 		case 'archive':
@@ -478,11 +481,11 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			break;
 		// display only AUTHOR
 		case 'author':
-			return wsp_return_content_type_author($is_title_displayed, $display_nofollow).$copyright_link;
+			return wsp_return_content_type_author($is_title_displayed, $display_nofollow, $sort).$copyright_link;
 			break;
 		// display only CATEGORY
 		case 'category':
-			return wsp_return_content_type_categories($is_title_displayed, $display_nofollow).$copyright_link;
+			return wsp_return_content_type_categories($is_title_displayed, $display_nofollow, $sort).$copyright_link;
 			break;
 		// display only TAGS
 		case 'tag':
@@ -499,7 +502,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			$cpt = get_post_type_object( $only_cpt );
 			
 			if ( !empty($cpt) ) {
-				return wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $only_cpt, $wsp_exclude_pages );
+				return wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $only_cpt, $wsp_exclude_pages, $sort );
 			}
 			
 			// check if it's a taxonomy
@@ -563,7 +566,7 @@ add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_private=false, $display_nofollow=false, $wsp_exclude_pages) {
+function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_private=false, $display_nofollow=false, $wsp_exclude_pages, $sort=null) {
 	
 	// init
 	$return = '';
@@ -576,6 +579,11 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
 	$args = array();
 	$args['title_li'] = '';
 	$args['echo']     = '0';
+	
+	// change the sort
+	if ($sort!==null) {
+		$args['sort_column'] = $sort;
+	}
 	
 	// exclude some pages ?
 	if (!empty($wsp_exclude_pages)) {
@@ -615,13 +623,21 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
  * @param bool $display_post_only_once
  * @return str $return
  */
-function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array() ) {
+function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort_categories=null ) {
 	
 	// init
 	$return = '';
 	
+	// args
+	$args = array();
+	
+	// change the sort order
+	if ($sort_categories!==null) {
+		$args['orderby'] = $sort_categories;
+	}
+	
 	// Get the categories
-	$cats = get_categories();
+	$cats = get_categories( $args );
 	
 	// check it's not empty
 	if (empty($cats)) {
@@ -648,13 +664,21 @@ function wsp_return_content_type_post( $is_title_displayed=true, $display_nofoll
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_categories($is_title_displayed=true, $display_nofollow=false) {
+function wsp_return_content_type_categories( $is_title_displayed=true, $display_nofollow=false, $sort=null ) {
 	
 	// init
 	$return = '';
 	
+	// args
+	$args = array();
+	
+	// change the sort order
+	if ($sort!==null) {
+		$args['orderby'] = $sort;
+	}
+	
 	// Get the categories
-	$cats = get_categories();
+	$cats = get_categories( $args );
 	
 	// check it's not empty
 	if (empty($cats)) {
@@ -690,8 +714,11 @@ function wsp_return_content_type_tag($is_title_displayed=true, $display_nofollow
 	// init
 	$return = '';
 	
+	// args
+	$args = array();
+	
 	// Get the categories
-	$posttags = get_tags();
+	$posttags = get_tags( $args );
 	
 	// check it's not empty
 	if (empty($posttags)) {
@@ -761,7 +788,7 @@ function wsp_return_content_type_archive($is_title_displayed=true, $display_nofo
  * @param bool $is_title_displayed
  * @return str $return
  */
-function wsp_return_content_type_author($is_title_displayed=true, $display_nofollow=false) {
+function wsp_return_content_type_author( $is_title_displayed=true, $display_nofollow=false, $sort=null ) {
 	
 	// init
 	$return = '';
@@ -769,6 +796,11 @@ function wsp_return_content_type_author($is_title_displayed=true, $display_nofol
 	// define the way the pages should be displayed
 	$args = array();
 	$args['echo'] = 0;
+	
+	// change the sort order
+	if ($sort!==null) {
+		$args['orderby'] = $sort;
+	}
 	
 	// get data
 	$list_authors = wp_list_authors($args);
@@ -801,16 +833,18 @@ function wsp_return_content_type_author($is_title_displayed=true, $display_nofol
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_cpt_lists($is_title_displayed=true, $display_nofollow=false, $wsp_exclude_pages) {
+function wsp_return_content_type_cpt_lists( $is_title_displayed=true, $display_nofollow=false, $wsp_exclude_pages ) {
 	
 	// init
 	$return = '';
 	
-	// Get the CPT (Custom Post Type)
+	// define the main arguments
 	$args = array(
 		'public'   => true,
 		'_builtin' => false
 	);
+	
+	// Get the CPT (Custom Post Type)
 	$post_types = get_post_types( $args, 'names' ); 
 	
 	// check it's not empty
@@ -846,7 +880,7 @@ function wsp_return_content_type_cpt_lists($is_title_displayed=true, $display_no
  * @param str $wsp_exclude_pages
  * @return str $return
  */
-function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_nofollow=false, $cpt, $post_type, $wsp_exclude_pages ) {
+function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_nofollow=false, $cpt, $post_type, $wsp_exclude_pages, $sort=null ) {
 	
 	// init
 	$return = '';
@@ -863,6 +897,11 @@ function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_n
 	// exclude some pages ?
 	if (!empty($wsp_exclude_pages)) {
 		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
+	// change the sort order
+	if ($sort!==null) {
+		$args['orderby'] = $sort;
 	}
 	
 	// Query to get the current custom post type
@@ -1022,7 +1061,7 @@ function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
  * @param bool $display_post_only_once
  * @return str $html
  */
-function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $display_nofollow=false, $wsp_exclude_pages = array() ) {
+function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $display_nofollow=false, $wsp_exclude_pages = array(), $sort=null ) {
 	
 	// check if not empty
 	if (empty($nav)) {
@@ -1049,7 +1088,7 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
 		$category_recursive = '';
 		if (!empty($page->sub)) {
 			// Use recursive function to get the childs categories
-			$category_recursive = wsp_htmlFromMultiArray($page->sub, false, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
+			$category_recursive = wsp_htmlFromMultiArray( $page->sub, false, $display_post_only_once, $display_nofollow, $wsp_exclude_pages, $sort );
 		}
 		
 		// display if it exist
@@ -1083,7 +1122,7 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
  * @param bool $display_post_only_once
  * @return str $html
  */
-function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_nofollow=false, $wsp_exclude_pages=array() ) {
+function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_nofollow=false, $wsp_exclude_pages=array(), $sort=null ) {
 	
 	global $the_post_id;
 	
@@ -1098,6 +1137,11 @@ function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_n
 	// exclude some pages ?
 	if (!empty($wsp_exclude_pages)) {
 		$args['exclude'] = $wsp_exclude_pages;
+	}
+	
+	// change the sort order
+	if ($sort!==null) {
+		$args['orderby'] = $sort;
 	}
 	
 	// List of posts for this category

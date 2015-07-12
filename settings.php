@@ -154,7 +154,7 @@ switch ($current_tab) {
 							class="large-text code"><?php
 							echo $textarea;
 							?></textarea>
-						<p class="description"><?php printf(__('Initial way to display the content: %1$s'), htmlentities($wsp_initial_posts_by_category)); ?></p>
+						<p class="description"><?php printf(__('Initial way to display the content: %1$s', 'wp_sitemap_page'), htmlentities($wsp_initial_posts_by_category)); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -360,12 +360,16 @@ switch ($current_tab) {
 			
 			<ul>
 				<li><strong>[wp_sitemap_page]</strong> <?php _e('To display a traditionnal sitemap', 'wp_sitemap_page'); ?></li>
-				<li><strong>[wp_sitemap_page only="post"]</strong> <?php _e('To display the posts by category', 'wp_sitemap_page'); ?></li>
-				<li><strong>[wp_sitemap_page only="category"]</strong> <?php _e('To display the categories', 'wp_sitemap_page'); ?></li>
-				<li><strong>[wp_sitemap_page only="tag"]</strong> <?php _e('To display the tags', 'wp_sitemap_page'); ?></li>
 				<li><strong>[wp_sitemap_page only="page"]</strong> <?php _e('To display the pages', 'wp_sitemap_page'); ?></li>
+				<li><strong>[wp_sitemap_page only="page" sort="menu_order"]</strong> <?php printf(__('To display the pages sorted by menu order. Possible values are: %1$s.', 'wp_sitemap_page'), '\'post_title\', \'menu_order\', \'post_date\', \'post_modified\', \'ID\', \'post_author\', \'post_name\''); ?></li>
+				<li><strong>[wp_sitemap_page only="post"]</strong> <?php _e('To display the posts by category', 'wp_sitemap_page'); ?></li>
+				<li><strong>[wp_sitemap_page only="post" sort="count"]</strong> <?php printf(__('To display the posts by category. Categories sorted by number of posts. Possible values are: %1$s', 'wp_sitemap_page'), '\'id\', \'name\', \'slug\', \'count\', \'term_group\''); ?></li>
+				<li><strong>[wp_sitemap_page only="category"]</strong> <?php _e('To display the categories', 'wp_sitemap_page'); ?></li>
+				<li><strong>[wp_sitemap_page only="category" sort="count"]</strong> <?php printf(__('To display the categories sorted by number of posts. Possible values are: %1$s', 'wp_sitemap_page'), '\'id\', \'name\', \'slug\', \'count\', \'term_group\''); ?></li>
+				<li><strong>[wp_sitemap_page only="tag"]</strong> <?php _e('To display the tags', 'wp_sitemap_page'); ?></li>
 				<li><strong>[wp_sitemap_page only="archive"]</strong> <?php _e('To display the archives', 'wp_sitemap_page'); ?></li>
 				<li><strong>[wp_sitemap_page only="author"]</strong> <?php _e('To display the authors', 'wp_sitemap_page'); ?></li>
+				<li><strong>[wp_sitemap_page only="author" sort="post_count"]</strong> <?php printf(__('To display the authors, sorted by number of posts by author. Possible values are: %1$s.', 'wp_sitemap_page'), '\'name\', \'email\', \'url\', \'registered\', \'id\', \'user_login\', \'post_count\''); ?></li>
 				<?php
 				// list all the CPT
 				foreach ( $post_types as $post_type ) :

@@ -3,8 +3,8 @@ Contributors: funnycat
 Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
-Tested up to: 4.2.0
-Stable tag: 1.5.4
+Tested up to: 4.2.2
+Stable tag: 1.5.5
 License: GPLv2 or later
 
 
@@ -84,6 +84,10 @@ This plugin is available through the following languages :
 *   Finnish (`fi_FI`) by [pokis.fi](http://www.pokis.fi/)
 *   Hungarian (`hu_HU`)
 *   Hebrew (`he_IL`) by Ahrale
+*   Bokmål (`nb_NO`) by Ã˜ystein
+*   Romanian (`ro_RO`)
+*   Indonesian (`id_ID`)
+*   Japanese (`ja`)
 
 If you want to add another language, feel free to [contact me](http://en.tonyarchambeau.com/contact.html) in order to send the file with the correct translation files (.mo and .po). Thanks a lot!
 
@@ -95,9 +99,13 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.5 =
+* Add Romanian and japanese translations
+* Functionality to sort the pages, post categories, authors or Custom Post Type (CPT)
 = 1.5.4 =
 * Small fix about a core WordPress update
 * Add Bokmål translation
+* Add Hebrew translation
 = 1.5.3 =
 * Add Hebrew translation
 = 1.5.2 =
