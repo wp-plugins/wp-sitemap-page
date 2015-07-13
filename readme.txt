@@ -4,7 +4,7 @@ Donate link: http://www.infowebmaster.fr/dons.php
 Tags: sitemap, generator, page list, site map, html sitemap, sitemap generator, dynamic sitemap, seo
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPLv2 or later
 
 
@@ -99,6 +99,8 @@ If you want to add another language, feel free to [contact me](http://en.tonyarc
 
 == Changelog ==
 
+= 1.5.6 =
+* Oups, the last translations were not send properly. Here it is.
 = 1.5.5 =
 * Add Romanian and japanese translations
 * Functionality to sort the pages, post categories, authors or Custom Post Type (CPT)
