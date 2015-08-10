@@ -1082,7 +1082,7 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
 			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'"'.$attr_nofollow.'>'.$page->name.'</a>' )
 			.'</strong>'."\n";
 		
-		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
+		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $display_nofollow, $wsp_exclude_pages, $sort);
 		
 		// List of posts for this category
 		$category_recursive = '';
