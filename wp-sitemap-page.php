@@ -628,7 +628,7 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
  * @param bool $display_post_only_once
  * @return str $return
  */
-function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort=null, $sort_order='ASC' ) {
+function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort=null, $sort_order=null ) {
 	
 	// init
 	$return = '';
