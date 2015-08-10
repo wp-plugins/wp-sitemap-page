@@ -516,7 +516,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	
 	//===============================================
-	// Otherwise, display traditionnal sitemap
+	// Otherwise, display traditional sitemap
 	//===============================================
 	
 	// exclude some custome post type (page, post, archive or author)
@@ -529,12 +529,12 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the PAGES
 	if ( empty($wsp_exclude_cpt_page) ) {
-		$return .= wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages, $sort);
 	}
 	
 	// List the POSTS by CATEGORY
 	if ( empty($wsp_exclude_cpt_post) ) {
-		$return .= wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages, $sort);
 	}
 	
 	// List the CPT
@@ -550,7 +550,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the AUTHORS
 	if ( empty($wsp_exclude_cpt_author) ) {
-		$return .= wsp_return_content_type_author($is_title_displayed, $display_nofollow);
+		$return .= wsp_return_content_type_author($is_title_displayed, $display_nofollow, $sort);
 	}
 	
 	// return the content
@@ -623,7 +623,7 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
  * @param bool $display_post_only_once
  * @return str $return
  */
-function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort_categories=null ) {
+function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort=null ) {
 	
 	// init
 	$return = '';
@@ -632,8 +632,8 @@ function wsp_return_content_type_post( $is_title_displayed=true, $display_nofoll
 	$args = array();
 	
 	// change the sort order
-	if ($sort_categories!==null) {
-		$args['orderby'] = $sort_categories;
+	if ($sort!==null) {
+		$args['orderby'] = $sort;
 	}
 	
 	// Get the categories
@@ -651,7 +651,7 @@ function wsp_return_content_type_post( $is_title_displayed=true, $display_nofoll
 	if ($is_title_displayed==true) {
 		$return .= '<h2 class="wsp-posts-title">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
 	}
-	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
+	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $display_nofollow, $wsp_exclude_pages, $sort);
 	
 	// return content
 	return apply_filters( 'wsp_posts_return', $return );
