@@ -1,0 +1,7 @@
+{
+    "name": "gsa/wp-sitemap-page",
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
