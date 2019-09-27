@@ -3,7 +3,13 @@
 Plugin Name: WP Sitemap Page
 Plugin URI: http://tonyarchambeau.com/
 Description: Add a sitemap on any page/post using the simple shortcode [wp_sitemap_page]
-Version: 1.5.6
+<<<<<<< .mine
+Version: 1.6.2
+||||||| .r1142557
+Version: 1.5.3
+=======
+Version: 1.6.2
+>>>>>>> .r2114646
 Author: Tony Archambeau
 Author URI: http://tonyarchambeau.com/
 Text Domain: wp-sitemap-page
@@ -402,6 +408,19 @@ function wsp_show_tabs() {
  * @param $content
  * @return str $return
  */
+function wsp_wp_sitemap_page_main_func( $atts, $content=null ) {
+	return '<div class="wsp-container">'.wsp_wp_sitemap_page_func( $atts, $content ).'</div>';
+}
+add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_main_func' );
+
+
+/**
+ * Main function to call all the various features
+ * 
+ * @param $atts
+ * @param $content
+ * @return str $return
+ */
 function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// init
@@ -412,8 +431,12 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	$only_cpt = (isset($atts['only']) ? sanitize_text_field($atts['only']) : '');
 	
 	// display or not the title
-	$display_title = (isset($atts['display_title']) ? sanitize_text_field($atts['display_title']) : 'true');
-	$is_title_displayed = ( $display_title=='false' ? false : true );
+	$get_display_title = (isset($atts['display_title']) ? sanitize_text_field($atts['display_title']) : 'true');
+	$is_title_displayed = ( $get_display_title=='false' ? false : true );
+	
+	// display or not the category title "category:"
+	$get_display_category_title_wording = (isset($atts['display_category_title_wording']) ? sanitize_text_field($atts['display_category_title_wording']) : 'true');
+	$is_category_title_wording_displayed = ( $get_display_category_title_wording=='false' ? false : true );
 	
 	// get only the private page/post ...
 	$only_private = (isset($atts['only_private']) ? sanitize_text_field($atts['only_private']) : 'false');
@@ -421,6 +444,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// get the kind of sort
 	$sort = (isset($atts['sort']) ? sanitize_text_field($atts['sort']) : null);
+	$order = (isset($atts['order']) ? sanitize_text_field($atts['order']) : null);
 	
 	// Exclude some pages (separated by a coma)
 	$wsp_exclude_pages        = trim(get_option('wsp_exclude_pages'));
@@ -473,7 +497,8 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			break;
 		// display only POST
 		case 'post':
-			return wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages, $sort).$copyright_link;
+			return wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $is_category_title_wording_displayed, 
+												$wsp_exclude_pages, $sort, $sort, $order).$copyright_link;
 			break;
 		// display only ARCHIVE
 		case 'archive':
@@ -502,7 +527,7 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 			$cpt = get_post_type_object( $only_cpt );
 			
 			if ( !empty($cpt) ) {
-				return wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $only_cpt, $wsp_exclude_pages, $sort );
+				return wsp_return_content_type_cpt_items( $is_title_displayed, $display_nofollow, $cpt, $only_cpt, $wsp_exclude_pages, $sort, $order );
 			}
 			
 			// check if it's a taxonomy
@@ -529,12 +554,13 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the PAGES
 	if ( empty($wsp_exclude_cpt_page) ) {
-		$return .= wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_page($is_title_displayed, $is_get_only_private, $display_nofollow, $wsp_exclude_pages, $sort);
 	}
 	
 	// List the POSTS by CATEGORY
 	if ( empty($wsp_exclude_cpt_post) ) {
-		$return .= wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $wsp_exclude_pages);
+		$return .= wsp_return_content_type_post($is_title_displayed, $display_nofollow, $display_post_only_once, $is_category_title_wording_displayed, 
+												$wsp_exclude_pages, $sort, $sort, $order);
 	}
 	
 	// List the CPT
@@ -550,23 +576,25 @@ function wsp_wp_sitemap_page_func( $atts, $content=null ) {
 	
 	// List the AUTHORS
 	if ( empty($wsp_exclude_cpt_author) ) {
-		$return .= wsp_return_content_type_author($is_title_displayed, $display_nofollow);
+		$return .= wsp_return_content_type_author($is_title_displayed, $display_nofollow, $sort);
 	}
 	
 	// return the content
 	return $return.$copyright_link;
 }
-add_shortcode( 'wp_sitemap_page', 'wsp_wp_sitemap_page_func' );
 
 
 /**
  * Return list of pages
  * 
  * @param bool $is_title_displayed
- * @param str $wsp_exclude_pages
+ * @param bool $is_get_only_private
+ * @param bool $display_nofollow
+ * @param array $wsp_exclude_pages
+ * @param str $sort
  * @return str $return
  */
-function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_private=false, $display_nofollow=false, $wsp_exclude_pages, $sort=null) {
+function wsp_return_content_type_page($is_title_displayed = true, $is_get_only_private = false, $display_nofollow = false, $wsp_exclude_pages = array(), $sort = null) {
 	
 	// init
 	$return = '';
@@ -584,7 +612,15 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
 	if ($sort!==null) {
 		$args['sort_column'] = $sort;
 	}
+	// change the sort criteria
+ 	if ($sort!==null) {
+ 		$args['orderby'] = $sort;
+ 	}
 	
+	// change the sort order
+	if ($order!==null) {
+		$args['order'] = $order;
+	}	
 	// exclude some pages ?
 	if (!empty($wsp_exclude_pages)) {
 		$args['exclude'] = $wsp_exclude_pages;
@@ -620,10 +656,17 @@ function wsp_return_content_type_page($is_title_displayed=true, $is_get_only_pri
  * Return list of posts in the categories
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
  * @param bool $display_post_only_once
+ * @param bool $is_category_title_wording_displayed
+ * @param array $wsp_exclude_pages
+ * @param str $sort_categories
+ * @param str $sort
+ * @param str $order
  * @return str $return
  */
-function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $wsp_exclude_pages=array(), $sort_categories=null ) {
+function wsp_return_content_type_post( $is_title_displayed=true, $display_nofollow=false, $display_post_only_once, $is_category_title_wording_displayed=true, 
+										$wsp_exclude_pages=array(), $sort_categories=null, $sort=null, $order=null ) {
 	
 	// init
 	$return = '';
@@ -651,7 +694,8 @@ function wsp_return_content_type_post( $is_title_displayed=true, $display_nofoll
 	if ($is_title_displayed==true) {
 		$return .= '<h2 class="wsp-posts-title">'.__('Posts by category', 'wp_sitemap_page').'</h2>'."\n";
 	}
-	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
+	$return .= wsp_htmlFromMultiArray($cats, true, $display_post_only_once, $is_category_title_wording_displayed, 
+									$display_nofollow, $wsp_exclude_pages, $sort, $order);
 	
 	// return content
 	return apply_filters( 'wsp_posts_return', $return );
@@ -672,9 +716,14 @@ function wsp_return_content_type_categories( $is_title_displayed=true, $display_
 	// args
 	$args = array();
 	
-	// change the sort order
+	// change the sort criteria
 	if ($sort!==null) {
 		$args['orderby'] = $sort;
+	}
+	
+	// change the sort order
+	if ($order!==null) {
+		$args['order'] = $order;
 	}
 	
 	// Get the categories
@@ -786,6 +835,8 @@ function wsp_return_content_type_archive($is_title_displayed=true, $display_nofo
  * Return list of authors
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
+ * @param text $sort
  * @return str $return
  */
 function wsp_return_content_type_author( $is_title_displayed=true, $display_nofollow=false, $sort=null ) {
@@ -797,9 +848,14 @@ function wsp_return_content_type_author( $is_title_displayed=true, $display_nofo
 	$args = array();
 	$args['echo'] = 0;
 	
-	// change the sort order
+	// change the sort criteria
 	if ($sort!==null) {
 		$args['orderby'] = $sort;
+	}
+	
+	// change the sort order
+	if ($order!==null) {
+		$args['order'] = $order;
 	}
 	
 	// get data
@@ -830,6 +886,7 @@ function wsp_return_content_type_author( $is_title_displayed=true, $display_nofo
  * Return list of all other custom post type
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
  * @param str $wsp_exclude_pages
  * @return str $return
  */
@@ -875,12 +932,14 @@ function wsp_return_content_type_cpt_lists( $is_title_displayed=true, $display_n
  * Return list of all other custom post type
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
  * @param str $cpt
  * @param str $post_type
  * @param str $wsp_exclude_pages
+ * @param str $sort
  * @return str $return
  */
-function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_nofollow=false, $cpt, $post_type, $wsp_exclude_pages, $sort=null ) {
+function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_nofollow=false, $cpt, $post_type, $wsp_exclude_pages, $sort=null, $order=null ) {
 	
 	// init
 	$return = '';
@@ -902,6 +961,11 @@ function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_n
 	// change the sort order
 	if ($sort!==null) {
 		$args['orderby'] = $sort;
+	}
+	
+	// change the sort order
+	if ($order!==null) {
+		$args['order'] = $order;
 	}
 	
 	// Query to get the current custom post type
@@ -936,6 +1000,7 @@ function wsp_return_content_type_cpt_items( $is_title_displayed=true, $display_n
  * Return list of all other custom post type
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
  * @param str $wsp_exclude_pages
  * @return str $return
  */
@@ -978,6 +1043,7 @@ function wsp_return_content_type_taxonomies_lists($is_title_displayed=true, $dis
  * Return list of all other taxonomies
  * 
  * @param bool $is_title_displayed
+ * @param bool $display_nofollow
  * @param object $taxonomy_obj
  * @param str $wsp_exclude_pages
  * @return str $return
@@ -1059,9 +1125,14 @@ function wsp_generateMultiArray( array $arr = array() , $parent = 0 ) {
  * @param array $nav
  * @param bool $useUL
  * @param bool $display_post_only_once
+ * @param bool $display_nofollow
+ * @param array $wsp_exclude_pages
+ * @param text $sort
+ * @param text $order
  * @return str $html
  */
-function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $display_nofollow=false, $wsp_exclude_pages = array(), $sort=null ) {
+function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_post_only_once = true, $is_category_title_wording_displayed = true, 
+								$display_nofollow = false, $wsp_exclude_pages = array(), $sort=null, $order=null ) {
 	
 	// check if not empty
 	if (empty($nav)) {
@@ -1078,17 +1149,24 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
 	
 	// List all the categories
 	foreach ($nav as $page) {
-		$html .= "\t".'<li><strong class="wsp-category-title">'
-			.sprintf( __('Category: %1$s', 'wp_sitemap_page'), '<a href="'.get_category_link($page->cat_ID).'"'.$attr_nofollow.'>'.$page->name.'</a>' )
-			.'</strong>'."\n";
+		// define category link
+		$category_link = '<a href="'.get_category_link($page->cat_ID).'"'.$attr_nofollow.'>'.$page->name.'</a>';
+		// define the text to display for the title of the category
+		if ($is_category_title_wording_displayed) {
+			$category_link_display = sprintf( __('Category: %1$s', 'wp_sitemap_page'), $category_link );
+		} else {
+			$category_link_display = $category_link;
+		}
+		$html .= "\t".'<li><strong class="wsp-category-title">'.$category_link_display.'</strong>'."\n";
 		
-		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $display_nofollow, $wsp_exclude_pages);
+		$post_by_cat = wsp_displayPostByCat($page->cat_ID, $display_post_only_once, $display_nofollow, $wsp_exclude_pages, $sort, $order);
 		
 		// List of posts for this category
 		$category_recursive = '';
 		if (!empty($page->sub)) {
 			// Use recursive function to get the childs categories
-			$category_recursive = wsp_htmlFromMultiArray( $page->sub, false, $display_post_only_once, $display_nofollow, $wsp_exclude_pages, $sort );
+			$category_recursive = wsp_htmlFromMultiArray( $page->sub, false, $display_post_only_once, $is_category_title_wording_displayed, 
+														$display_nofollow, $wsp_exclude_pages, $sort, $order );
 		}
 		
 		// display if it exist
@@ -1120,9 +1198,13 @@ function wsp_htmlFromMultiArray( array $nav = array() , $useUL = true, $display_
  * 
  * @param int $cat_id
  * @param bool $display_post_only_once
+ * @param bool $display_nofollow
+ * @param array $wsp_exclude_pages
+ * @param text $sort
+ * @param text $order
  * @return str $html
  */
-function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_nofollow=false, $wsp_exclude_pages=array(), $sort=null ) {
+function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_nofollow=false, $wsp_exclude_pages=array(), $sort=null, $order=null ) {
 	
 	global $the_post_id;
 	
@@ -1142,6 +1224,9 @@ function wsp_displayPostByCat( $cat_id, $display_post_only_once=true, $display_n
 	// change the sort order
 	if ($sort!==null) {
 		$args['orderby'] = $sort;
+	}
+	if ($order!==null) {
+		$args['order'] = $order;
 	}
 	
 	// List of posts for this category
