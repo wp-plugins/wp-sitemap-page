@@ -5,7 +5,7 @@ msgstr ""
 "POT-Creation-Date: 2015-07-12 17:25+0100\n"
 "PO-Revision-Date: 2015-07-12 17:25+0100\n"
 "Last-Translator: Tony Archambeau <contact@tonyarchambeau.com>\n"
-"Language-Team: trojmiasto.us <mariusz@trojmiasto.us>\n"
+"Language-Team: wppoland <hello@wppoland.com>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_5_4_next/wp-sitemap-page.php:145
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_5_4_next/wp-sitemap-page.php:146
 msgid "WP Sitemap Page"
-msgstr "WP Sitemap Page"
+msgstr "Strona WP Sitemap"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_5_4_next/settings.php:40
 msgid "Help us"
@@ -336,7 +336,7 @@ msgstr "Strony"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_5_4_next/wp-sitemap-page.php:652
 msgid "Posts by category"
-msgstr "Wpisy podzielone na kategorie"
+msgstr "Wpisy z kategorii"
 
 #: /home/tony/websites/www-dev/public/wp_plugins/wp-sitemap-page/plugin_1_5_4_next/wp-sitemap-page.php:693
 #, fuzzy
